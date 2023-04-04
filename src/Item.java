@@ -1,49 +1,68 @@
-public class Item {
+public abstract class Item {
+    public static enum Rarity {
+        COMMON(100.0, 40),
+        UNCOMMON(250.0,40),
+        RARE(500.0, 40),
+        VERY_RARE(1000.0, 40),
+        LEGENDARY(2500.0, 30),
+        MYTHIC(7500.0,30);
+        final double baseValue;
+        final double valueScalar;
 
-    String rarity;
+        Rarity(double baseValue, double valueScalar) {
+            this.baseValue = baseValue;
+            this.valueScalar = valueScalar;
+        }
+
+    }
+    Rarity rarity;
     int value;
-    public Item(int characterLuck){
-        setRarity(characterLuck);
-        setValue(rarity);
+    double dexterityScalar = 1.0;
+    public Item(){
+//        setRarity(PCharacter.get);
+//        setValue(rarity);
     }
 
     private void setRarity(int luck) {
-        String temp;
+        Rarity temp;
         int randomNum = NumberProcessor.getRandom(0,101);
-        randomNum = randomNum*(luck/100);
+        randomNum = randomNum*(1+ (luck/100));
         if(randomNum <= 30){
-            temp = "Common";
+            temp = Rarity.COMMON;
         } else if(randomNum <= 55){
-            temp = "Uncommon";
+            temp = Rarity.UNCOMMON;
         } else if(randomNum <= 75){
-            temp = "Rare";
+            temp = Rarity.RARE;
         } else if(randomNum <= 90){
-            temp = "Very Rare";
+            temp = Rarity.VERY_RARE;
         } else if(randomNum <= 98){
-            temp = "Legendary";
+            temp = Rarity.LEGENDARY;
         } else {
-            temp = "Artifact";
+            temp = Rarity.MYTHIC;
         }
         rarity = temp;
     }
-    public String getRarity() {
+    public Rarity getRarity() {
         return rarity;
     }
 
-    private void setValue(String rarity) {
+    private void setValue(Rarity rarity) {
+        //if(Rarity.c)
         switch (rarity){
-            case "Common" : value = (int)(100.0 / (NumberProcessor.getRandom(40,100)/100));
+            case COMMON: value = (int)(100.0 / (NumberProcessor.getRandom(40,100)/100));
                 break;
-            case "Uncommon" : value = (int)(250.0 / (NumberProcessor.getRandom(40,100)/100));
+            case UNCOMMON: value = (int)(250.0 / (NumberProcessor.getRandom(40,100)/100));
                 break;
-            case "Rare" : value = (int)(500.0 / (NumberProcessor.getRandom(40,100)/100));
+            case RARE: value = (int)(500.0 / (NumberProcessor.getRandom(40,100)/100));
                 break;
-            case "Very Rare" : value = (int)(1000.0 / (NumberProcessor.getRandom(40,100)/100));
+            case VERY_RARE: value = (int)(1000.0 / (NumberProcessor.getRandom(40,100)/100));
                 break;
-            case "Legendary" : value = (int)(2500.0 / (NumberProcessor.getRandom(30,100)/100));
+            case LEGENDARY: value = (int)(2500.0 / (NumberProcessor.getRandom(30,100)/100));
                 break;
-            case "Artifact" : value = (int)(7500.0 / (NumberProcessor.getRandom(30,100)/100));
-
+            case MYTHIC: value = (int)(7500.0 / (NumberProcessor.getRandom(30,100)/100));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + rarity);
         }
     }
     public int getValue() {
