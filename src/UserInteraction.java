@@ -8,12 +8,12 @@ public class UserInteraction {
     private void welcome(){
         System.out.println("Welcome to The Eternal Archipelago");
         System.out.println("what will be your story?");
+        characterSelect();
     }
     private void characterSelect(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Select your origin story");
         System.out.println("Elf [0], Human [1], Dwarf [2], Dragonborn [3], Gnome [4]");
-
         int choice = scanner.nextInt();
         printRaceStats(choice);
 
@@ -101,5 +101,6 @@ public class UserInteraction {
                     break;
             }
         }
+        Main.character.printBaseStats();
     }
 }

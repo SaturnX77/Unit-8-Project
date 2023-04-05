@@ -18,6 +18,7 @@ public abstract class Item {
     Rarity rarity;
     int value;
     double dexterityScalar = 1.0;
+    String name;
     public Item(){
 //        setRarity(PCharacter.get);
 //        setValue(rarity);
@@ -65,6 +66,11 @@ public abstract class Item {
                 throw new IllegalStateException("Unexpected value: " + rarity);
         }
     }
+
+    public void setName() {
+
+    }
+
     public int getValue() {
         return value;
     }

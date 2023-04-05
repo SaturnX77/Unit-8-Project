@@ -40,4 +40,15 @@ public class PCharacter {
         return temp;
     }
 
+    public void printBaseStats(){
+        //ArrayList<Double> temp = getEffectiveStats();
+        System.out.println("Health: " + baseHealth);
+        System.out.println("Attack: " + baseAttack);
+        System.out.println("Defense: " + baseDefense);
+        System.out.println("Dexterity: " + baseDexterity);
+        System.out.println("Intelligence: " + baseIntelligence);
+        System.out.println("Mana: " + baseMana);
+        System.out.println("Luck: " + baseLuck);
+    }
+
 }
