@@ -1,5 +1,7 @@
 public class Main {
+    public static PCharacter character;
     public static void main(String[] args) {
-        ProgressionManager progressionManager = new ProgressionManager();
+        character = new PCharacter();
+        UserInteraction userInteraction = new UserInteraction();
     }
 }
