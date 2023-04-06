@@ -112,7 +112,13 @@ public class UserInteraction {
         Main.character.printBaseStats();
     }
     private void printCharacterPreview(String charName){
-        ArrayList<String> temp = FileReader.getStringData("src/art/" + charName + ".txt");
+        ArrayList<String> temp = FileReader.getStringData("src/art/character" + charName + ".txt");
+        for(String string : temp){
+            System.out.println(string);
+        }
+    }
+    public static void printEnv(String envName){
+        ArrayList<String> temp = FileReader.getStringData("src/art/environment/" + envName + ".txt");
         for(String string : temp){
             System.out.println(string);
         }
