@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInteraction {
@@ -29,6 +30,7 @@ public class UserInteraction {
                 System.out.println("Base Intelligence: 75");
                 System.out.println("Base Mana: 55");
                 System.out.println("Base Luck: 45");
+                printCharacterPreview("elf");
                 confirmCharacter("elf");
                 break;
             case 1 :
@@ -40,6 +42,7 @@ public class UserInteraction {
                 System.out.println("Base Intelligence: 70");
                 System.out.println("Base Mana: 35");
                 System.out.println("Base Luck: 40");
+                printCharacterPreview("human");
                 confirmCharacter("human");
                 break;
             case 2 :
@@ -51,6 +54,7 @@ public class UserInteraction {
                 System.out.println("Base Intelligence: 60");
                 System.out.println("Base Mana: 15");
                 System.out.println("Base Luck: 55");
+                printCharacterPreview("dwarf");
                 confirmCharacter("dwarf");
                 break;
             case 3 :
@@ -62,6 +66,7 @@ public class UserInteraction {
                 System.out.println("Base Intelligence: 40");
                 System.out.println("Base Mana: 30");
                 System.out.println("Base Luck: 25");
+                printCharacterPreview("dragonborn");
                 confirmCharacter("dragonborn");
                 break;
             case 4 :
@@ -73,6 +78,7 @@ public class UserInteraction {
                 System.out.println("Base Intelligence: 85");
                 System.out.println("Base Mana: 30");
                 System.out.println("Base Luck: 90");
+                printCharacterPreview("gnome");
                 confirmCharacter("gnome");
                 break;
         }
@@ -100,7 +106,15 @@ public class UserInteraction {
                     Main.character.setStats(50,30,70,20,85,30,90);
                     break;
             }
+        } else{
+            characterSelect();
         }
         Main.character.printBaseStats();
+    }
+    private void printCharacterPreview(String charName){
+        ArrayList<String> temp = FileReader.getStringData("src/art/" + charName + ".txt");
+        for(String string : temp){
+            System.out.println(string);
+        }
     }
 }

@@ -126,7 +126,7 @@ public class Weapon extends Item{
 
     public void setName() {
         ArrayList<String> weaponNames = FileReader.getStringData("src/names/" + getWeaponType() +"names.txt");
-        String temp = weaponNames.get(NumberProcessor.getRandom(0,weaponNames.size()+1));
+        String temp = weaponNames.get(NumberProcessor.getRandom(0,weaponNames.size()));
         setName(temp);
     }
 

@@ -12,4 +12,5 @@ public class Armor extends Item{
     public double getDexterityScalar() {
         return dexterityScalar;
     }
+
 }
