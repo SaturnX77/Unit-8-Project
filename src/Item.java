@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public abstract class Item {
     public static enum Rarity {
         COMMON(100.0, 40),
@@ -18,20 +20,11 @@ public abstract class Item {
     Rarity rarity;
     int value = 0;
     double dexterityScalar = 1.0;
-    String name;
-    public Item(){
-//        setRarity(PCharacter.get);
-//        setValue(rarity);
-    }
 
     public void setRarity(double luck) {
         Rarity temp;
         double randomNum = NumberProcessor.getRandom(0,101);
-        System.out.println("base: " + randomNum);
-        System.out.println("luck value: " + luck);
-        System.out.println("factor: " + (1+ (luck/300)));
         randomNum = randomNum*(1+ (luck/300));
-        System.out.println("luck applied: " + randomNum);
         if(randomNum <= 30){
             temp = Rarity.COMMON;
         } else if(randomNum <= 55){
@@ -77,10 +70,6 @@ public abstract class Item {
                 setValue((int)(7500.0 / ((NumberProcessor.getRandom(30,100))/100.0)));
                 break;
         }
-    }
-
-    public void setName() {
-
     }
 
     public int getValue() {

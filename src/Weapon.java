@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 public class Weapon extends Item{
     double attack = 0.0;
     double dexScalar = 1.0;
+    String name;
     double attackScalar = 1.0;
-    public enum weaponClass {
+    public enum WeaponType {
         AXE(0.7, 1.5),
         STAFF(0.7, 1.5),
         SWORD(1.1, 1.3),
@@ -12,15 +15,71 @@ public class Weapon extends Item{
         final double dexScalar;
         final double attackScalar;
 
-        weaponClass(double dexScalar, double attackScalar) {
+        WeaponType(double dexScalar, double attackScalar) {
             this.attackScalar = attackScalar;
             this.dexScalar = dexScalar;
         }
     }
-    static weaponClass weaponClass;
-    public Weapon(){
-        super();
+
+    public Weapon (PCharacter character){
+        //Weapon temp = new Weapon();
+        setRarity((int)character.baseLuck);
+        setValue(getRarity());
+        int num = NumberProcessor.getRandom(0,6);
+        switch (num){
+            case 0: //AXE
+                setWeaponClass(WeaponType.AXE);
+                setDexScalar(WeaponType.AXE.dexScalar);
+                break;
+            case 1: //STAFF
+                setWeaponClass(WeaponType.STAFF);
+                setDexScalar(WeaponType.STAFF.dexScalar);
+                break;
+            case 2: //SWORD
+                setWeaponClass(WeaponType.SWORD);
+                setDexScalar(WeaponType.SWORD.dexScalar);
+                break;
+            case 3: //GRIMOIRE
+                setWeaponClass(WeaponType.GRIMOIRE);
+                setDexScalar(WeaponType.GRIMOIRE.dexScalar);
+                break;
+            case 4: //DAGGER
+                setWeaponClass(WeaponType.DAGGER);
+                setDexScalar(WeaponType.DAGGER.dexScalar);
+                break;
+            case 5: //BOW
+                setWeaponClass(WeaponType.BOW);
+                setDexScalar(WeaponType.BOW.dexScalar);
+
+        }
+        Rarity rarity = getRarity();
+        switch (rarity){
+            case COMMON:
+                setAttack(30,50, getWeaponType());
+                // temp.setAttack(NumberProcessor.getRandom(30,50) * Weapon.weaponClass.AXE.attackScalar);
+                break;
+            case UNCOMMON:
+                setAttack(50,70, getWeaponType());
+                // temp.setAttack(NumberProcessor.getRandom(50,70) * Weapon.weaponClass.AXE.attackScalar);
+                break;
+            case RARE:
+                setAttack(70,90, getWeaponType());
+                break;
+            case VERY_RARE:
+                setAttack(90,110, getWeaponType());
+                break;
+            case LEGENDARY:
+                setAttack(120,140,getWeaponType());
+                break;
+            case MYTHIC:
+                setAttack(180, 280, getWeaponType());
+                break;
+        }
+        setName();
+       //return temp;
+
     }
+    public WeaponType weaponType;
 
     public double getAttack() {
         return attack;
@@ -29,8 +88,8 @@ public class Weapon extends Item{
     public void setAttack(double attack) {
         this.attack = attack;
     }
-    public void setAttack(int low, int high, Weapon.weaponClass weaponClass){
-        setAttack(NumberProcessor.getRandom(low,high) * weaponClass.attackScalar);
+    public void setAttack(int low, int high, WeaponType weaponType){
+        setAttack(NumberProcessor.getRandom(low,high) * weaponType.attackScalar);
     }
 
     public void setDexScalar(double dexScalar) {
@@ -40,77 +99,35 @@ public class Weapon extends Item{
         this.attackScalar = attackScalar;
     }
 
-    public void setWeaponClass(Weapon.weaponClass weaponClass) {
-        this.weaponClass = weaponClass;
+    public void setWeaponClass(WeaponType weaponType) {
+        this.weaponType = weaponType;
     }
 
-    public static Weapon.weaponClass getWeaponClass() {
-        return weaponClass;
-    }
-
-    public Weapon createWeapon(PCharacter character){
-        Weapon temp = new Weapon();
-        temp.setRarity((int)character.baseLuck);
-        temp.setValue(temp.getRarity());
-        int num = NumberProcessor.getRandom(0,6);
-        switch (num){
-            case 0: //AXE
-                temp.setWeaponClass(Weapon.weaponClass.AXE);
-                temp.setDexScalar(Weapon.weaponClass.AXE.dexScalar);
-                break;
-            case 1: //STAFF
-                temp.setWeaponClass(Weapon.weaponClass.STAFF);
-                temp.setDexScalar(Weapon.weaponClass.STAFF.dexScalar);
-                break;
-            case 2: //SWORD
-                temp.setWeaponClass(Weapon.weaponClass.SWORD);
-                temp.setDexScalar(Weapon.weaponClass.SWORD.dexScalar);
-                break;
-            case 3: //GRIMOIRE
-                temp.setWeaponClass(Weapon.weaponClass.GRIMOIRE);
-                temp.setDexScalar(Weapon.weaponClass.GRIMOIRE.dexScalar);
-                break;
-            case 4: //DAGGER
-                temp.setWeaponClass(Weapon.weaponClass.DAGGER);
-                temp.setDexScalar(Weapon.weaponClass.DAGGER.dexScalar);
-                break;
-            case 5: //BOW
-                temp.setWeaponClass(Weapon.weaponClass.BOW);
-                temp.setDexScalar(Weapon.weaponClass.BOW.dexScalar);
-
-        }
-        Rarity rarity = temp.getRarity();
-        switch (rarity){
-            case COMMON:
-                temp.setAttack(30,50, temp.getWeaponClass());
-                // temp.setAttack(NumberProcessor.getRandom(30,50) * Weapon.weaponClass.AXE.attackScalar);
-                break;
-            case UNCOMMON:
-                temp.setAttack(50,70, temp.getWeaponClass());
-                // temp.setAttack(NumberProcessor.getRandom(50,70) * Weapon.weaponClass.AXE.attackScalar);
-                break;
-            case RARE:
-                temp.setAttack(70,90, temp.getWeaponClass());
-                break;
-            case VERY_RARE:
-                temp.setAttack(90,110, temp.getWeaponClass());
-                break;
-            case LEGENDARY:
-                temp.setAttack(120,140,temp.getWeaponClass());
-                break;
-            case MYTHIC:
-                temp.setAttack(180, 280, temp.getWeaponClass());
-                break;
-        }
-        return temp;
+    public WeaponType getWeaponType() {
+        return weaponType;
     }
 
     public static void printWeaponStats(Weapon weapon){
         System.out.println("Weapon stats");
+        System.out.println("Name: " + weapon.getName());
         System.out.println("Attack: " +weapon.getAttack());
         System.out.println("Rarity: " +weapon.getRarity());
         System.out.println("Value: " + weapon.getValue());
-        System.out.println("Class: " + weapon.getWeaponClass());
+        System.out.println("Class: " + weapon.getWeaponType());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setName() {
+        ArrayList<String> weaponNames = FileReader.getStringData("src/names/" + getWeaponType() +"names.txt");
+        String temp = weaponNames.get(NumberProcessor.getRandom(0,weaponNames.size()+1));
+        setName(temp);
     }
 
 }
