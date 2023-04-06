@@ -16,7 +16,7 @@ public abstract class Item {
 
     }
     Rarity rarity;
-    int value;
+    int value = 0;
     double dexterityScalar = 1.0;
     String name;
     public Item(){
@@ -24,10 +24,14 @@ public abstract class Item {
 //        setValue(rarity);
     }
 
-    private void setRarity(int luck) {
+    public void setRarity(double luck) {
         Rarity temp;
-        int randomNum = NumberProcessor.getRandom(0,101);
-        randomNum = randomNum*(1+ (luck/100));
+        double randomNum = NumberProcessor.getRandom(0,101);
+        System.out.println("base: " + randomNum);
+        System.out.println("luck value: " + luck);
+        System.out.println("factor: " + (1+ (luck/300)));
+        randomNum = randomNum*(1+ (luck/300));
+        System.out.println("luck applied: " + randomNum);
         if(randomNum <= 30){
             temp = Rarity.COMMON;
         } else if(randomNum <= 55){
@@ -47,23 +51,31 @@ public abstract class Item {
         return rarity;
     }
 
-    private void setValue(Rarity rarity) {
+    public void setValue(int value){
+        this.value = value;
+    }
+    public void setValue(Rarity rarity) {
         //if(Rarity.c)
         switch (rarity){
-            case COMMON: value = (int)(100.0 / (NumberProcessor.getRandom(40,100)/100));
+            case COMMON:
+                //int         double                           int                          double
+                setValue((int)(100.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
                 break;
-            case UNCOMMON: value = (int)(250.0 / (NumberProcessor.getRandom(40,100)/100));
+            case UNCOMMON:
+                setValue((int)(250.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
                 break;
-            case RARE: value = (int)(500.0 / (NumberProcessor.getRandom(40,100)/100));
+            case RARE:
+                setValue((int)(500.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
                 break;
-            case VERY_RARE: value = (int)(1000.0 / (NumberProcessor.getRandom(40,100)/100));
+            case VERY_RARE:
+                setValue((int)(1000.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
                 break;
-            case LEGENDARY: value = (int)(2500.0 / (NumberProcessor.getRandom(30,100)/100));
+            case LEGENDARY:
+                setValue((int)(2500.0 * ((NumberProcessor.getRandom(30,100))/100.0)));
                 break;
-            case MYTHIC: value = (int)(7500.0 / (NumberProcessor.getRandom(30,100)/100));
+            case MYTHIC:
+                setValue((int)(7500.0 / ((NumberProcessor.getRandom(30,100))/100.0)));
                 break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + rarity);
         }
     }
 
