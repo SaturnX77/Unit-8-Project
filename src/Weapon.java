@@ -23,7 +23,7 @@ public class Weapon extends Item{
 
     public Weapon (PCharacter character){
         //Weapon temp = new Weapon();
-        setRarity((int)character.baseLuck);
+        setRarity((int)character.getEffectiveLuck());
         setValue(getRarity());
         int num = NumberProcessor.getRandom(0,6);
         switch (num){
@@ -107,13 +107,13 @@ public class Weapon extends Item{
         return weaponType;
     }
 
-    public static void printWeaponStats(Weapon weapon){
-        System.out.println("Weapon stats");
-        System.out.println("Name: " + weapon.getName());
-        System.out.println("Attack: " +weapon.getAttack());
-        System.out.println("Rarity: " +weapon.getRarity());
-        System.out.println("Value: " + weapon.getValue());
-        System.out.println("Class: " + weapon.getWeaponType());
+    public void printWeaponStats(){
+        System.out.println("\nWeapon stats:");
+        System.out.println("Name: " + getName());
+        System.out.println("Attack: " + getAttack());
+        System.out.println("Rarity: " + getRarity());
+        System.out.println("Value: " + getValue());
+        System.out.println("Class: " + getWeaponType());
     }
 
     public String getName() {

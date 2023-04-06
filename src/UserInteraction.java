@@ -4,20 +4,70 @@ import java.util.Scanner;
 public class UserInteraction {
 
     public UserInteraction(){
-        welcome();
+        //welcome();
     }
-    private void welcome(){
+    public void welcome(){
         System.out.println("Welcome to The Eternal Archipelago");
         System.out.println("what will be your story?");
         characterSelect();
+        ProgressionManager progressionManager = new ProgressionManager();
+        progressionManager.startGame();
     }
     private void characterSelect(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Select your origin story");
+        System.out.println("Select your character");
         System.out.println("Elf [0], Human [1], Dwarf [2], Dragonborn [3], Gnome [4]");
         int choice = scanner.nextInt();
         printRaceStats(choice);
-
+    }
+    public static String getUserText(){
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().toLowerCase();
+    }
+    public void actionBar(boolean inCombat){
+        if(inCombat){
+            combatActionBar();
+        } else {
+            passiveActionBar();
+        }
+    }
+    private void passiveActionBar(){
+        System.out.println("\nWhat would you like to? [Move Forward] [View Inventory] [See Stats] [Rest]");
+        switch (UserInteraction.getUserText()){
+            case "move forward":
+                ProgressionManager.moveForward();
+                //wip
+                //passiveActionBar();
+                break;
+            case "view inventory":
+                Main.character.viewInventory();
+                //wip
+                passiveActionBar();
+                break;
+            case "see stats":
+                Main.character.printEffectiveStats();
+                passiveActionBar();
+                break;
+            case "rest":
+                Main.character.rest();
+                passiveActionBar();
+                break;
+                //character
+        }
+    }
+    private void combatActionBar(){
+        System.out.println("\nWhat would you like to? [Attack] [Heal] [Run Away]");
+        switch (UserInteraction.getUserText()){
+            case "attack":
+                //character attack
+                break;
+            case "heal":
+                Main.character.combatRest();
+                break;
+            case "run away":
+                //develop some sort of mechanic for this
+                break;
+        }
     }
     private void printRaceStats(int choice){
         switch (choice){
@@ -112,15 +162,10 @@ public class UserInteraction {
         Main.character.printBaseStats();
     }
     private void printCharacterPreview(String charName){
-        ArrayList<String> temp = FileReader.getStringData("src/art/character" + charName + ".txt");
+        ArrayList<String> temp = FileReader.getStringData("src/art/character/" + charName + ".txt");
         for(String string : temp){
             System.out.println(string);
         }
     }
-    public static void printEnv(String envName){
-        ArrayList<String> temp = FileReader.getStringData("src/art/environment/" + envName + ".txt");
-        for(String string : temp){
-            System.out.println(string);
-        }
-    }
+
 }

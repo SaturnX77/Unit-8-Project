@@ -4,6 +4,7 @@ public class Main {
         //System.out.println("\033[107m\033[30m");
         character = new PCharacter();
         UserInteraction userInteraction = new UserInteraction();
+        userInteraction.welcome();
         //Weapon test = new Weapon(character);
         //Weapon.printWeaponStats(test);
         //System.out.println();
