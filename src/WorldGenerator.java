@@ -1,13 +1,18 @@
 import java.util.ArrayList;
 
 public class WorldGenerator {
+    //public int movesLeft = NumberProcessor.getRandom(4,8);
     public int movesLeft = 6;
     //public boolean inTile = true;
     WorldType worldType;
+    WorldType previousTile = null;
     public enum WorldType {
         CAVE(0.9,0.0,0),
         PLAIN(0.5,0.1,0),
         ROAD(0.2,0.2,0),
+        ANCIENT_RUINS(0.5,0.0,0),
+        FOREST(0.6,0.1,0),
+        ATLANTIS(0.7,0.0,0),
         CASTLE(0,0,1);
         final double monsterChance;
         final double merchantChance;
@@ -20,19 +25,20 @@ public class WorldGenerator {
         }
 
     }
-    private WorldType getWorldType(){
+    public WorldType getWorldType(){
         return worldType;
     }
     public WorldGenerator(){
     }
 
     public void subtractMoves(){
-        movesLeft--;
         if(movesLeft == 0){
             exitTile();
             generateWorldTile();
-
+           // movesLeft = NumberProcessor.getRandom(4,8);
+            movesLeft = 6;
         }
+        movesLeft--;
     }
     private void exitTile(){
         switch (worldType){
@@ -45,6 +51,15 @@ public class WorldGenerator {
             case CAVE:
                 System.out.println("The dark caverns disappear and you are finally able to see the light. You have exited the cave");
                 break;
+            case ANCIENT_RUINS:
+                System.out.println("The broken stone disappears from around your feet. The acropolis is now long behind you. You have exited the ancient ruins");
+                break;
+            case FOREST:
+                System.out.println("You push away a dense patch of branches. The musty smell fades away and the trees are all behind you now. You have exited the forest");
+                break;
+            case ATLANTIS:
+                System.out.println("You feel those same hands that pulled you down from earlier. They grab your waist and suddenly you're flung out of the water. You can finally breathe fresh air again. You have exited the sunken city");
+                break;
             case CASTLE:
                 System.out.println("yea dis the end of the game but you aren't supposed to be here");
                 break;
@@ -52,6 +67,7 @@ public class WorldGenerator {
     }
 
     private void enterTile(){
+        //System.out.println(worldType);
         switch (worldType){
             case PLAIN:
                 printEnv(worldType);
@@ -64,6 +80,19 @@ public class WorldGenerator {
             case CAVE:
                 printEnv(worldType);
                 System.out.println("You find yourself at the maw of an ominous cave. You enter the cave. The light disappears around you.");
+                break;
+            case FOREST:
+                printEnv(worldType);
+                System.out.println("Trees stretch up endlessly around you and a musty scent fills your nostrils. You have entered the forest");
+                break;
+            case ANCIENT_RUINS:
+                printEnv(worldType);
+                System.out.println("You find yourself in a field of ancient ruins. Crumbling stone pillars and a worn marble acropolis stands in front of you. You have entered the ancient ruins");
+                System.out.println("An ancient magical energy surrounds you.");
+                break;
+            case ATLANTIS:
+                printEnv(worldType);
+                System.out.println("You find yourself at the edge of a lake. Suddenly invisible hands drag you into the water and a bubble of water appears around your head. You have entered the sunken city");
                 break;
             case CASTLE:
                 printEnv(worldType);
@@ -80,9 +109,15 @@ public class WorldGenerator {
         WorldType temp = null;
         double randomNum = NumberProcessor.getRandom(0,101);
         randomNum = randomNum*(1+ (ProgressionManager.gameProgressionTurns/30.0));
-        System.out.println("world gen:" + randomNum);
-        if(randomNum <= 45){
+       // System.out.println("world gen:" + randomNum);
+        if(randomNum <= 20){
             temp = WorldType.PLAIN;
+        } else if(randomNum<= 30){
+            temp = WorldType.ATLANTIS;
+        } else if (randomNum <= 40){
+            temp = WorldType.ANCIENT_RUINS;
+        } else if(randomNum <= 55){
+            temp = WorldType.FOREST;
         } else if(randomNum <= 75){
             temp = WorldType.ROAD;
         } else if(randomNum <= 99){
@@ -91,6 +126,10 @@ public class WorldGenerator {
             temp = WorldType.CASTLE;
         }
         worldType = temp;
+        if(worldType.equals(previousTile)){
+            generateWorldTile();
+        }
+        previousTile = temp;
         enterTile();
         //generateWorldTile();
            // Item.Rarity temp;

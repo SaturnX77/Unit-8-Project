@@ -41,9 +41,12 @@ public class ProgressionManager {
         userInteraction.actionBar(inCombat);
 
     }
-    public static void moveForward(){
-        worldGenerator.generateWorldTile();
+    public static void moveForward(){if(worldGenerator.movesLeft == 6){
+            worldGenerator.generateWorldTile();
+        }
+        worldGenerator.subtractMoves();
         userInteraction.actionBar(inCombat);
+        gameProgressionTurns++;
     }
     private void giveWeapon(){
         System.out.println("You have acquired a new weapon");

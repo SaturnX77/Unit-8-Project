@@ -32,22 +32,26 @@ public class UserInteraction {
         }
     }
     private void passiveActionBar(){
-        System.out.println("\nWhat would you like to? [Move Forward] [View Inventory] [See Stats] [Rest]");
+        System.out.println("\nWhat would you like to?   [Move Forward][0]   [View Inventory][1]   [See Stats][2]   [Rest][3]");
         switch (UserInteraction.getUserText()){
+            case "0":
             case "move forward":
                 ProgressionManager.moveForward();
                 //wip
                 //passiveActionBar();
                 break;
+            case "1":
             case "view inventory":
                 Main.character.viewInventory();
                 //wip
                 passiveActionBar();
                 break;
+            case "2":
             case "see stats":
                 Main.character.printEffectiveStats();
                 passiveActionBar();
                 break;
+            case "3":
             case "rest":
                 Main.character.rest();
                 passiveActionBar();
