@@ -1,7 +1,9 @@
 public class ProgressionManager {
     int returnPoint = 0;
     static boolean inCombat = false;
-    static UserInteraction userInteraction = new UserInteraction();
+    static boolean isTrading = false;
+    static boolean isLooting = false;
+   // static UserInteraction userInteraction = new UserInteraction();
     static WorldGenerator worldGenerator = new WorldGenerator();
     public static int gameProgressionTurns = 0;
     public ProgressionManager(){
@@ -38,14 +40,21 @@ public class ProgressionManager {
         }
     }
     public void game(){
-        userInteraction.actionBar(inCombat);
+        //need an action bar that doesn't take in anything
+        UserInteraction.actionBar();
 
     }
-    public static void moveForward(){if(worldGenerator.movesLeft == 6){
+    public static void moveForward(){
+        if(worldGenerator.globalMovesLeft == worldGenerator.globalMovesinTile){
             worldGenerator.generateWorldTile();
         }
         worldGenerator.subtractMoves();
-        userInteraction.actionBar(inCombat);
+        sleep(1000);
+        NPC npc = new NPC(worldGenerator.getWorldType(), Main.character);
+        if(npc.npcType.equals(NPC.NpcType.ENEMY)){
+            inCombat = true;
+        }
+        UserInteraction.actionBar(inCombat, isTrading, isLooting, npc,Main.character);
         gameProgressionTurns++;
     }
     private void giveWeapon(){
@@ -67,12 +76,26 @@ public class ProgressionManager {
         System.out.println("You did nothing.... nothing happened");
     }
 
-    private void sleep(int milliseconds){
+    public static void sleep(int milliseconds){
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static void turnManager(NPC enemy){
+        if(UserInteraction.enemyDefeated){
+            inCombat = false;
+            isLooting = true;
+            UserInteraction.actionBar(isLooting);
+        } else {
+            //inCombat = true;
+            UserInteraction.actionBar(inCombat,isTrading,isLooting,enemy,Main.character);
+        }
+    }
+    public static void turnManager(){
+        isLooting = false;
+        UserInteraction.actionBar();
     }
 
 }

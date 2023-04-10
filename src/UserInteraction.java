@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInteraction {
+    static boolean enemyDefeated = false;
 
     public UserInteraction(){
         //welcome();
@@ -24,14 +25,72 @@ public class UserInteraction {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().toLowerCase();
     }
-    public void actionBar(boolean inCombat){
-        if(inCombat){
-            combatActionBar();
-        } else {
-            passiveActionBar();
+    public static void actionBar(){
+        passiveActionBar();
+    }
+    public static void actionBar(boolean isLooting){
+        if(isLooting){
+            lootingActionBar((Weapon) Main.character.inventory.get(0), (Armor) Main.character.inventory.get(1));
         }
     }
-    private void passiveActionBar(){
+    public static void actionBar(boolean inCombat, boolean trading, boolean looting, NPC enemy, PCharacter character){
+        if(inCombat){
+            combatActionBar(enemy,character);
+        } else if(!trading){
+            passiveActionBar();
+        } else {
+            tradeActionBar();
+        }
+    }
+    private static void lootingActionBar(Weapon weapon, Armor armor){
+        int rand = NumberProcessor.getRandom(0,2);
+        String temp;
+        switch (rand){
+            case 0:
+                System.out.println("\nCurrent Weapon:");
+                weapon.printWeaponStats();
+                System.out.println("\nLooted Weapon:");
+                Weapon tempWeapon = new Weapon(Main.character);
+                tempWeapon.printWeaponStats();
+                System.out.println("Would you like to replace your weapon?   [Yes][0]   [No][1]");
+                temp = UserInteraction.getUserText().toLowerCase();
+                switch (temp){
+                    case "0":
+                    case "yes":
+                        Main.character.inventory.set(0,tempWeapon);
+                        System.out.println("Equipped looted weapon");
+                        break;
+                    case "1":
+                    case "no":
+                        System.out.println("Leaving looted weapon");
+                        break;
+                }
+                break;
+            case 1:
+                System.out.println("\nCurrent Armor:");
+                armor.printArmorStats();
+                System.out.println("\nLooted Armor:");
+                Armor tempArmor = new Armor(Main.character);
+                tempArmor.printArmorStats();
+                System.out.println("Would you like to replace your armor?   [Yes][0]   [No][1]");
+                temp = UserInteraction.getUserText().toLowerCase();
+                switch (temp){
+                    case "0":
+                    case "yes":
+                        Main.character.inventory.set(1,tempArmor);
+                        System.out.println("Equipped looted armor");
+                        break;
+                    case "1":
+                    case "no":
+                        System.out.println("Leaving looted armor");
+                        break;
+                }
+                break;
+        }
+        ProgressionManager.turnManager();
+
+    }
+    private static void passiveActionBar(){
         System.out.println("\nWhat would you like to?   [Move Forward][0]   [View Inventory][1]   [See Stats][2]   [Rest][3]");
         switch (UserInteraction.getUserText()){
             case "0":
@@ -59,17 +118,77 @@ public class UserInteraction {
                 //character
         }
     }
-    private void combatActionBar(){
-        System.out.println("\nWhat would you like to? [Attack] [Heal] [Run Away]");
+    private static void combatActionBar(NPC enemy, PCharacter character){
+        enemyDefeated = false;
+        //System.out.println("\nPrepare for combat");
+        ProgressionManager.sleep(1000);
+        if(enemy.dexterity > character.getEffectiveDex()){
+            ProgressionManager.sleep(200);
+            System.out.println("\nEnemy attacks first");
+            attackCharacter(enemy);
+        }
+        System.out.println("\nWhat would you like to?   [Attack][0]   [Heal][1]   [Run Away][2]");
         switch (UserInteraction.getUserText()){
+            case "0":
             case "attack":
                 //character attack
+                attackEnemy(enemy);
+                if(enemy.health > 0){
+                    attackCharacter(enemy);
+                }
+                ProgressionManager.turnManager(enemy);
+                //actionBar(ProgressionManager.inCombat,ProgressionManager.isTrading,enemy,character);
                 break;
+            case "1":
             case "heal":
                 Main.character.combatRest();
                 break;
+            case "2":
             case "run away":
                 //develop some sort of mechanic for this
+                break;
+        }
+    }
+    private static void attackCharacter(NPC npc){
+        double randomNum = NumberProcessor.getRandom(0,101);
+        randomNum = randomNum*(1+ (Main.character.getEffectiveDex()/200));
+        if(randomNum <= 60){
+            double damage = npc.attack / (Main.character.getEffectiveDefense()/100);
+            Main.character.subtractHealth(damage);
+            System.out.println("You have taken " + damage + " damage");
+            System.out.println("You have " + Main.character.getEffectiveHealth() + " health");
+        } else {
+            System.out.println("You have dodged the attack");
+        }
+    }
+    private static void attackEnemy(NPC npc){
+        double randomNum = NumberProcessor.getRandom(0,101);
+        randomNum = randomNum*(1+ (npc.dexterity/200));
+        if(randomNum <= 60){
+            double damage = npc.attack / (npc.defense/100);
+            npc.subtractHealth(damage);
+            System.out.println("Enemy has taken " + damage + " damage");
+            System.out.println("It has " + npc.health + " health left");
+        } else {
+            System.out.println("Enemy has dodged the attack");
+        }
+
+        if(npc.health <= 0){
+            System.out.println("You have vanquished your enemy");
+            enemyDefeated = true;
+           // ProgressionManager.inCombat = false;
+        }
+    }
+    private static void tradeActionBar(){
+        System.out.println("\nWhat would you like to?   [Trade][0]   [Leave][1]");
+        switch (UserInteraction.getUserText()){
+            case "0":
+            case "trade":
+                //character trade
+                break;
+            case "1":
+            case "leave":
+                //move forward
                 break;
         }
     }
@@ -163,7 +282,7 @@ public class UserInteraction {
         } else{
             characterSelect();
         }
-        Main.character.printBaseStats();
+       // Main.character.printBaseStats();
     }
     private void printCharacterPreview(String charName){
         ArrayList<String> temp = FileReader.getStringData("src/art/character/" + charName + ".txt");

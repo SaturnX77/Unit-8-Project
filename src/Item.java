@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-
 public abstract class Item {
-    public static enum Rarity {
+    public enum Rarity {
         COMMON(100.0, 40),
         UNCOMMON(250.0,40),
         RARE(500.0, 40),
@@ -19,7 +17,6 @@ public abstract class Item {
     }
     Rarity rarity;
     int value = 0;
-    double dexterityScalar = 1.0;
 
     public void setRarity(double luck) {
         Rarity temp;
@@ -48,28 +45,29 @@ public abstract class Item {
         this.value = value;
     }
     public void setValue(Rarity rarity) {
-        //if(Rarity.c)
-        switch (rarity){
-            case COMMON:
-                //int         double                           int                          double
-                setValue((int)(100.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
-                break;
-            case UNCOMMON:
-                setValue((int)(250.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
-                break;
-            case RARE:
-                setValue((int)(500.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
-                break;
-            case VERY_RARE:
-                setValue((int)(1000.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
-                break;
-            case LEGENDARY:
-                setValue((int)(2500.0 * ((NumberProcessor.getRandom(30,100))/100.0)));
-                break;
-            case MYTHIC:
-                setValue((int)(7500.0 / ((NumberProcessor.getRandom(30,100))/100.0)));
-                break;
-        }
+        setValue((int) (rarity.baseValue / ((NumberProcessor.getRandom(rarity.valueScalar,100))/100.0)));
+//        //if(Rarity.c)
+//        switch (rarity){
+//            case COMMON:
+//                //int         double                           int                          double
+//                setValue((int)(100.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
+//                break;
+//            case UNCOMMON:
+//                setValue((int)(250.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
+//                break;
+//            case RARE:
+//                setValue((int)(500.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
+//                break;
+//            case VERY_RARE:
+//                setValue((int)(1000.0 / ((NumberProcessor.getRandom(40,100))/100.0)));
+//                break;
+//            case LEGENDARY:
+//                setValue((int)(2500.0 * ((NumberProcessor.getRandom(30,100))/100.0)));
+//                break;
+//            case MYTHIC:
+//                setValue((int)(7500.0 / ((NumberProcessor.getRandom(30,100))/100.0)));
+//                break;
+//        }
     }
 
     public int getValue() {

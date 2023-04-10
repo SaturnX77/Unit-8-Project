@@ -8,7 +8,7 @@ public class PCharacter {
     double baseIntelligence;
     double baseMana;
     double baseLuck;
-    public static double turns = 5;
+    double currentHealth;
 
     ArrayList<Item> inventory = new ArrayList<>();
 
@@ -26,6 +26,7 @@ public class PCharacter {
         this.baseDexterity = baseDexterity;
         this.baseMana = baseMana;
         this.baseIntelligence = baseIntelligence;
+        currentHealth = baseHealth;
     }
     //slot 0 is attack, slot 1 is defense, slot 2 is dexterity, slot 3 is luck, slot 4 is health in stats
     public ArrayList<Double> getEffectiveStats(){
@@ -62,7 +63,10 @@ public class PCharacter {
         return baseLuck; //+ getEffectiveStats().get(3);
     }
     public double getEffectiveHealth(){
-        return baseHealth; //+ getEffectiveStats().get(4);
+        return currentHealth; //+ getEffectiveStats().get(4);
+    }
+    public void subtractHealth(double number){
+        currentHealth -= number;
     }
 
     public void printBaseStats(){

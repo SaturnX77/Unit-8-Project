@@ -2,7 +2,8 @@ import java.util.ArrayList;
 
 public class WorldGenerator {
     //public int movesLeft = NumberProcessor.getRandom(4,8);
-    public int movesLeft = 6;
+    public int globalMovesLeft;
+    public int globalMovesinTile;
     //public boolean inTile = true;
     WorldType worldType;
     WorldType previousTile = null;
@@ -32,13 +33,14 @@ public class WorldGenerator {
     }
 
     public void subtractMoves(){
-        if(movesLeft == 0){
+        if(globalMovesLeft == 0){
             exitTile();
             generateWorldTile();
            // movesLeft = NumberProcessor.getRandom(4,8);
-            movesLeft = 6;
+            globalMovesinTile = NumberProcessor.getRandom(4,8);
+            globalMovesLeft = globalMovesinTile;
         }
-        movesLeft--;
+        globalMovesLeft--;
     }
     private void exitTile(){
         switch (worldType){
@@ -92,7 +94,7 @@ public class WorldGenerator {
                 break;
             case ATLANTIS:
                 printEnv(worldType);
-                System.out.println("You find yourself at the edge of a lake. Suddenly invisible hands drag you into the water and a bubble of water appears around your head. You have entered the sunken city");
+                System.out.println("You find yourself at the edge of a lake. Suddenly invisible hands drag you into the water and a bubble of air appears around your head. You have entered the sunken city");
                 break;
             case CASTLE:
                 printEnv(worldType);
@@ -102,10 +104,9 @@ public class WorldGenerator {
 
     }
 
-    public int getMovesLeft() {
-        return movesLeft;
-    }
     public void generateWorldTile(){
+        globalMovesinTile = NumberProcessor.getRandom(4,8);
+        globalMovesLeft = globalMovesinTile;
         WorldType temp = null;
         double randomNum = NumberProcessor.getRandom(0,101);
         randomNum = randomNum*(1+ (ProgressionManager.gameProgressionTurns/30.0));
@@ -128,11 +129,10 @@ public class WorldGenerator {
         worldType = temp;
         if(worldType.equals(previousTile)){
             generateWorldTile();
+        } else {
+            previousTile = temp;
+            enterTile();
         }
-        previousTile = temp;
-        enterTile();
-        //generateWorldTile();
-           // Item.Rarity temp;
     }
     private void printEnv(WorldType envName){
         ArrayList<String> temp = FileReader.getStringData("src/art/environment/" + envName + ".txt");
