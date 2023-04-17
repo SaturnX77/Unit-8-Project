@@ -95,6 +95,11 @@ public class Weapon extends Item{
     public void setDexScalar(double dexScalar) {
         this.dexScalar = dexScalar;
     }
+
+    public double getDexScalar() {
+        return dexScalar;
+    }
+
     public void setAttackScalar(double attackScalar){
         this.attackScalar = attackScalar;
     }

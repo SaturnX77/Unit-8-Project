@@ -3,7 +3,7 @@ public class NPC {
     double attack = 0.0;
     double defense = 0.0;
     double dexterity = 0.0;
-    double value = 0.0;
+    int value = 0;
     Item tradeItem;
     WorldGenerator.WorldType worldType;
     public enum Rarity {
@@ -209,7 +209,7 @@ public class NPC {
                     enemyType = EnemyType.DRAGON;
             }
             setRarity(character.getEffectiveLuck());
-            value = rarity.baseValue / ((NumberProcessor.getRandom(rarity.valueScalar,100))/100.0);
+            value = (int) (rarity.baseValue / ((NumberProcessor.getRandom(rarity.valueScalar,100))/100.0));
             attack = (NumberProcessor.getRandom(rarity.statsScalarLow,rarity.statsScalarHigh)) * enemyType.attackScalar;
             defense = (NumberProcessor.getRandom(rarity.statsScalarLow,rarity.statsScalarHigh)) * enemyType.defenseScalar;
             dexterity = (NumberProcessor.getRandom(20,100)) * enemyType.dexScalar;

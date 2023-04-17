@@ -5,10 +5,12 @@ public class PCharacter {
     double baseAttack;
     double baseDefense;
     double baseDexterity;
+    double effectiveDex;
     double baseIntelligence;
     double baseMana;
     double baseLuck;
     double currentHealth;
+    int coins = 0;
 
     ArrayList<Item> inventory = new ArrayList<>();
 
@@ -31,21 +33,24 @@ public class PCharacter {
     //slot 0 is attack, slot 1 is defense, slot 2 is dexterity, slot 3 is luck, slot 4 is health in stats
     public ArrayList<Double> getEffectiveStats(){
         ArrayList<Double> temp = new ArrayList<>();
-        temp.add(null);
-        temp.add(null);
-        temp.add(null);
-        temp.add(null);
-        temp.add(null);
-
+        temp.add(0.0);
+        temp.add(0.0);
+        temp.add(0.0);
+        temp.add(0.0);
+        temp.add(0.0);
+        effectiveDex = baseDexterity;
         for(Item item : inventory){
             if(item instanceof Weapon){
                 temp.set(0, baseAttack + ((Weapon) item).getAttack());
+                effectiveDex *= ((Weapon) item).getDexScalar();
+                temp.set(2, baseDexterity * ((Weapon) item).getDexScalar());
             } else if(item instanceof Armor){
                 temp.set(1, baseDefense + ((Armor) item).getDefense());
-                temp.set(2, baseDexterity * ((Armor) item).getDexterityScalar());
+                effectiveDex *= ((Armor) item).dexterityScalar;
             } else if(item instanceof Artifact){
                 //temp.set(2, baseDexterity * )
             }
+            temp.set(2, effectiveDex);
 
         }
         return temp;
@@ -81,6 +86,7 @@ public class PCharacter {
     }
     public void printEffectiveStats(){
         //ArrayList<Double> temp = getEffectiveStats();
+        System.out.println("\nCoins: " + coins);
         System.out.println("\nEffective stats:");
         System.out.println("Health: " + getEffectiveHealth());
         System.out.println("Attack: " + getEffectiveAttack());
@@ -98,9 +104,45 @@ public class PCharacter {
     }
     public void rest(){
         //heals you back to full hp
+        System.out.println("You have healed " + (baseHealth - currentHealth) + " health");
+        currentHealth = baseHealth;
     }
     public void combatRest(){
         //heals you 30% uses 1 turns
+        double temp = currentHealth;
+        currentHealth += baseHealth * 0.3;
+        if(currentHealth > baseHealth){
+            currentHealth = baseHealth;
+            System.out.println("You have healed " + (baseHealth - temp) + " health");
+        } else {
+            System.out.println("You have healed " +  (baseHealth * 0.3) + " health");
+        }
+    }
+
+    public void runAway(NPC enemy){
+        int randomNum = NumberProcessor.getRandom(0,100);
+        double compare = NumberProcessor.getRandom(0,50) * (1+ baseLuck/100) * (1+ baseDexterity/100);
+        System.out.println("randomNum: " +randomNum);
+        System.out.println("compare: " + compare);
+        if(compare > randomNum){
+            System.out.println("You have successfully left combat");
+            ProgressionManager.inCombat = false;
+            ProgressionManager.turnManager();
+        } else {
+            System.out.println("You have failed to escape");
+            ProgressionManager.turnManager(enemy);
+        }
+    }
+    public boolean isDead(){
+        if(currentHealth < 0){
+            System.out.println("dead");
+            return true;
+        }
+        System.out.println("not dead");
+        return false;
+    }
+    public void respawn(){
+        currentHealth = baseHealth;
     }
 
 }

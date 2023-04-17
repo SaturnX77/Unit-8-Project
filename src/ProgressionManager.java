@@ -1,13 +1,10 @@
 public class ProgressionManager {
-    int returnPoint = 0;
+    public static int returnPoint = 0;
     static boolean inCombat = false;
     static boolean isTrading = false;
     static boolean isLooting = false;
-   // static UserInteraction userInteraction = new UserInteraction();
     static WorldGenerator worldGenerator = new WorldGenerator();
     public static int gameProgressionTurns = 0;
-    public ProgressionManager(){
-    }
     public void startGame(){
         if(returnPoint == 0){
             System.out.println("Your eyes flicker open and take a second to adjust to the light");
@@ -20,10 +17,14 @@ public class ProgressionManager {
             sleep(1000);
             returnPoint = 1;
         }
+        if (returnPoint == 2){
+            worldGenerator.globalMovesLeft = 0;
+        }
         System.out.println("You are lying on a beach. The sandy particles are everywhere in your clothes and you can hear waves crashing behind you");
-        System.out.println("What do you do? [look around] [nothing]");
+        System.out.println("What do you do?   [look around][0]   [nothing][1]");
         String userInput = UserInteraction.getUserText();
         switch (userInput){
+            case "0":
             case "look around":
                 System.out.println("You look and notice that around you is a weapon and a set of armor");
                 giveWeapon();
@@ -33,6 +34,7 @@ public class ProgressionManager {
                 sleep(2000);
                 game();
                 break;
+            case "1":
             case "nothing":
                 doNothing();
                 startGame();
@@ -49,7 +51,7 @@ public class ProgressionManager {
             worldGenerator.generateWorldTile();
         }
         worldGenerator.subtractMoves();
-        sleep(1000);
+        sleep(300);
         NPC npc = new NPC(worldGenerator.getWorldType(), Main.character);
         if(npc.npcType.equals(NPC.NpcType.ENEMY)){
             inCombat = true;
@@ -84,18 +86,39 @@ public class ProgressionManager {
         }
     }
     public static void turnManager(NPC enemy){
-        if(UserInteraction.enemyDefeated){
+        if(Main.character.isDead()){
+            death();
+        } else if(UserInteraction.enemyDefeated){
+            System.out.println("You're in the other place");
             inCombat = false;
             isLooting = true;
             UserInteraction.actionBar(isLooting);
         } else {
             //inCombat = true;
+            System.out.println("you're here");
             UserInteraction.actionBar(inCombat,isTrading,isLooting,enemy,Main.character);
         }
     }
     public static void turnManager(){
-        isLooting = false;
-        UserInteraction.actionBar();
+        if(Main.character.isDead()){
+            death();
+        } else {
+            isLooting = false;
+            UserInteraction.actionBar();
+        }
+    }
+    public static void death(){
+        System.out.println("\nThe world fades to black around you");
+        sleep(2000);
+        System.out.println("Suddenly a stale air fills your lungs and your eyes open again");
+        System.out.println("You find yourself in a desecrated cathedral. Pale light shines through broken mosaic windows");
+        sleep(5000);
+        System.out.println("You bring yourself to your feet and you find that your wounds from battle have been healed");
+        sleep(5000);
+        System.out.println("A voice pierces through your mind even though you can't see anyone");
+        sleep(2000);
+        System.out.println("Your journey is not over yet");
+        UserInteraction.deathUpgrades();
     }
 
 }

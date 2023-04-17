@@ -122,31 +122,43 @@ public class UserInteraction {
         enemyDefeated = false;
         //System.out.println("\nPrepare for combat");
         ProgressionManager.sleep(1000);
-        if(enemy.dexterity > character.getEffectiveDex()){
-            ProgressionManager.sleep(200);
-            System.out.println("\nEnemy attacks first");
-            attackCharacter(enemy);
-        }
-        System.out.println("\nWhat would you like to?   [Attack][0]   [Heal][1]   [Run Away][2]");
-        switch (UserInteraction.getUserText()){
-            case "0":
-            case "attack":
-                //character attack
-                attackEnemy(enemy);
-                if(enemy.health > 0){
-                    attackCharacter(enemy);
-                }
+        if(character.isDead()){
+            ProgressionManager.inCombat = false;
+            ProgressionManager.turnManager(enemy);
+        } else {
+            if(enemy.dexterity > character.getEffectiveDex()){
+                ProgressionManager.sleep(200);
+                System.out.println("\nEnemy attacks first");
+                attackCharacter(enemy);
+            }
+            if(character.isDead()){
+                ProgressionManager.inCombat = false;
                 ProgressionManager.turnManager(enemy);
-                //actionBar(ProgressionManager.inCombat,ProgressionManager.isTrading,enemy,character);
-                break;
-            case "1":
-            case "heal":
-                Main.character.combatRest();
-                break;
-            case "2":
-            case "run away":
-                //develop some sort of mechanic for this
-                break;
+            } else {
+                System.out.println("\nWhat would you like to?   [Attack][0]   [Heal][1]   [Run Away][2]");
+                switch (UserInteraction.getUserText()){
+                    case "0":
+                    case "attack":
+                        //character attack
+                        attackEnemy(enemy);
+                        if(enemy.health > 0){
+                            attackCharacter(enemy);
+                        }
+                        ProgressionManager.turnManager(enemy);
+                        //actionBar(ProgressionManager.inCombat,ProgressionManager.isTrading,enemy,character);
+                        break;
+                    case "1":
+                    case "heal":
+                        Main.character.combatRest();
+                        ProgressionManager.turnManager(enemy);
+                        break;
+                    case "2":
+                    case "run away":
+                        Main.character.runAway(enemy);
+                        //develop some sort of mechanic for this
+                        break;
+                }
+            }
         }
     }
     private static void attackCharacter(NPC npc){
@@ -157,6 +169,11 @@ public class UserInteraction {
             Main.character.subtractHealth(damage);
             System.out.println("You have taken " + damage + " damage");
             System.out.println("You have " + Main.character.getEffectiveHealth() + " health");
+//            if(Main.character.isDead()){
+//                ProgressionManager.inCombat = false;
+//              //  enemyDefeated = true;
+//                ProgressionManager.turnManager(npc);
+//            }
         } else {
             System.out.println("You have dodged the attack");
         }
@@ -175,6 +192,7 @@ public class UserInteraction {
 
         if(npc.health <= 0){
             System.out.println("You have vanquished your enemy");
+            Main.character.coins += npc.value;
             enemyDefeated = true;
            // ProgressionManager.inCombat = false;
         }
@@ -259,9 +277,9 @@ public class UserInteraction {
 
     private void confirmCharacter(String race){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Confirm Selection? [Yes] [No]");
+        System.out.println("Confirm Selection? [Yes][0]   [No][1]");
         String answer = scanner.next();
-        if(answer.equalsIgnoreCase("yes")){
+        if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("0")){
             switch (race){
                 case "elf" :
                     Main.character.setStats(70,40,30,60,75,55,45);
@@ -282,7 +300,6 @@ public class UserInteraction {
         } else{
             characterSelect();
         }
-       // Main.character.printBaseStats();
     }
     private void printCharacterPreview(String charName){
         ArrayList<String> temp = FileReader.getStringData("src/art/character/" + charName + ".txt");
@@ -291,4 +308,76 @@ public class UserInteraction {
         }
     }
 
+    public static void deathUpgrades(){
+        ProgressionManager.sleep(1000);
+        System.out.println("\nYou have obtained " + Main.character.coins + " coins in your adventure");
+        ProgressionManager.sleep(1000);
+        System.out.println("You can now use these coins to upgrade your base stats. Any coins not spent will be lost");
+        ProgressionManager.sleep(1000);
+        System.out.println("It costs 1000 coins per upgrade");
+        int upgradeTimes = Main.character.coins/1000;
+        System.out.println("You can upgrade your base stats " + upgradeTimes +" times");
+        if(upgradeTimes == 0){
+            System.out.println("Since you cannot upgrade your character, you will now rise again");
+            ProgressionManager.sleep(2000);
+            System.out.println();
+            ProgressionManager progressionManager = new ProgressionManager();
+            ProgressionManager.returnPoint = 2;
+            Main.character.respawn();
+            progressionManager.startGame();
+        } else {
+            String userInput = "";
+            int statUpgradeCount = 0;
+            while(!userInput.equals("6")){
+                System.out.println("Which stat would you like to upgrade?");
+                System.out.println("Health is [0], Attack is [1], Defense is [2], Dexterity is [3], Intelligence is [4], and Mana is [5]     Finish is [6]");
+                Scanner scanner  = new Scanner(System.in);
+                userInput = scanner.nextLine();
+                if(userInput.equals("0") ||userInput.equals("1") || userInput.equals("2")|| userInput.equals("3")|| userInput.equals("4") || userInput.equals("5")){
+                    boolean enterUpgradeCount = false;
+                    while(!enterUpgradeCount){
+                        System.out.println("How many times would you like to upgrade this stat?");
+                        statUpgradeCount = scanner.nextInt();
+                        if(statUpgradeCount > upgradeTimes){
+                            System.out.println("Invalid Input");
+                        } else {
+                            upgradeTimes -= statUpgradeCount;
+                            enterUpgradeCount = true;
+                        }
+                    }
+                } else if(userInput.equals("6")){
+                    ProgressionManager progressionManager = new ProgressionManager();
+                    ProgressionManager.returnPoint = 2;
+                    System.out.println("\nYou will now rise again");
+                    ProgressionManager.sleep(2000);
+                    Main.character.respawn();
+                    progressionManager.startGame();
+                } else {
+                    System.out.println("Invalid Input");
+                }
+            }
+            switch (userInput){
+                case "0":
+                    Main.character.baseHealth += (2 * statUpgradeCount);
+                    break;
+                case "1":
+                    Main.character.baseAttack += (2 * statUpgradeCount);
+                    break;
+                case "2":
+                    Main.character.baseDefense += (2 * statUpgradeCount);
+                    break;
+                case "3":
+                    Main.character.baseDexterity += (statUpgradeCount);
+                    break;
+                case "4":
+                    Main.character.baseIntelligence += (2 * statUpgradeCount);
+                    break;
+                case "5":
+                    Main.character.baseMana += (statUpgradeCount);
+                    break;
+            }
+            System.out.println("Your new stats are: ");
+            Main.character.printEffectiveStats();
+        }
+    }
 }
