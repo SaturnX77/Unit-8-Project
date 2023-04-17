@@ -343,6 +343,26 @@ public class UserInteraction {
                         } else {
                             upgradeTimes -= statUpgradeCount;
                             enterUpgradeCount = true;
+                            switch (userInput){
+                                case "0":
+                                    Main.character.baseHealth += (2 * statUpgradeCount);
+                                    break;
+                                case "1":
+                                    Main.character.baseAttack += (2 * statUpgradeCount);
+                                    break;
+                                case "2":
+                                    Main.character.baseDefense += (2 * statUpgradeCount);
+                                    break;
+                                case "3":
+                                    Main.character.baseDexterity += (statUpgradeCount);
+                                    break;
+                                case "4":
+                                    Main.character.baseIntelligence += (2 * statUpgradeCount);
+                                    break;
+                                case "5":
+                                    Main.character.baseMana += (statUpgradeCount);
+                                    break;
+                            }
                         }
                     }
                 } else if(userInput.equals("6")){
@@ -356,26 +376,7 @@ public class UserInteraction {
                     System.out.println("Invalid Input");
                 }
             }
-            switch (userInput){
-                case "0":
-                    Main.character.baseHealth += (2 * statUpgradeCount);
-                    break;
-                case "1":
-                    Main.character.baseAttack += (2 * statUpgradeCount);
-                    break;
-                case "2":
-                    Main.character.baseDefense += (2 * statUpgradeCount);
-                    break;
-                case "3":
-                    Main.character.baseDexterity += (statUpgradeCount);
-                    break;
-                case "4":
-                    Main.character.baseIntelligence += (2 * statUpgradeCount);
-                    break;
-                case "5":
-                    Main.character.baseMana += (statUpgradeCount);
-                    break;
-            }
+
             System.out.println("Your new stats are: ");
             Main.character.printEffectiveStats();
         }
