@@ -417,22 +417,22 @@ public class UserInteraction {
                 Main.character.coins -= (statUpgradeCount * 1000);
                 switch (userInput){
                     case "0":
-                        Main.character.baseHealth += (2 * statUpgradeCount);
+                        Main.character.baseHealth += (5 * statUpgradeCount);
                         break;
                     case "1":
-                        Main.character.baseAttack += (2 * statUpgradeCount);
+                        Main.character.baseAttack += (5 * statUpgradeCount);
                         break;
                     case "2":
-                        Main.character.baseDefense += (2 * statUpgradeCount);
+                        Main.character.baseDefense += (5 * statUpgradeCount);
                         break;
                     case "3":
-                        Main.character.baseDexterity += (statUpgradeCount);
+                        Main.character.baseDexterity += (2 * statUpgradeCount);
                         break;
                     case "4":
-                        Main.character.baseIntelligence += (2 * statUpgradeCount);
+                        Main.character.baseIntelligence += (5 * statUpgradeCount);
                         break;
                     case "5":
-                        Main.character.baseMana += (statUpgradeCount);
+                        Main.character.baseMana += (2 * statUpgradeCount);
                         break;
                 }
                 System.out.println("You have " + Main.character.coins + " coins left");

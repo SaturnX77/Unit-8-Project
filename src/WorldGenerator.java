@@ -1,3 +1,4 @@
+import java.time.Period;
 import java.util.ArrayList;
 
 public class WorldGenerator {
@@ -14,7 +15,7 @@ public class WorldGenerator {
         ANCIENT_RUINS(0.5,0.0,0),
         FOREST(0.6,0.1,0),
         ATLANTIS(0.7,0.0,0),
-        CASTLE(0,0,1);
+        CASTLE(1,0,1);
         final double monsterChance;
         final double merchantChance;
         final int gameEnd;
@@ -98,7 +99,21 @@ public class WorldGenerator {
                 break;
             case CASTLE:
                 printEnv(worldType);
-                System.out.println("oh fuck i didnt write the code for this");
+                System.out.println("You find yourself at the foot of a towering castle. Its stony walls seems to stretch up near infinitely into the sky");
+                System.out.println("This would be good news if there wasn't an enormous red dragon curled around the main tower of the castle");
+                ProgressionManager.sleep(1000);
+                System.out.println("A second passes");
+                System.out.println("Suddenly the dragon's eyes open and you are met with a piercing yellow stare");
+                System.out.println("It lets out a deafening roar and begins to stretch it's massive wings");
+                ProgressionManager.sleep(1000);
+                System.out.println("In the blink of an eye the dragon drops down from the tower and lands between you and the main gate of the castle");
+                System.out.println("You can feel the heat of it's flames as you stand before it");
+                ProgressionManager.sleep(1000);
+                System.out.println("This is it...");
+                ProgressionManager.sleep(1000);
+                System.out.println("Welcome to the end");
+               // System.out.println("oh fuck i didnt write the code for this");
+
                 break;
         }
 
@@ -110,7 +125,8 @@ public class WorldGenerator {
         WorldType temp = null;
         double randomNum = NumberProcessor.getRandom(0,101);
         randomNum = randomNum*(1+ (ProgressionManager.gameProgressionTurns/30.0));
-       // System.out.println("world gen:" + randomNum);
+       // System.out.println("world gen:" + randomNum)
+       // randomNum = 100; //kill this later
         if(randomNum <= 20){
             temp = WorldType.PLAIN;
         } else if(randomNum<= 30){

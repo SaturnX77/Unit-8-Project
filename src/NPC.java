@@ -207,8 +207,12 @@ public class NPC {
                     break;
                 case CASTLE:
                     enemyType = EnemyType.DRAGON;
+                    break;
             }
             setRarity(character.getEffectiveLuck());
+            if(enemyType == EnemyType.DRAGON){
+                rarity = Rarity.MYTHIC;
+            }
             value = (int) (rarity.baseValue / ((NumberProcessor.getRandom(rarity.valueScalar,100))/100.0));
             attack = (NumberProcessor.getRandom(rarity.statsScalarLow,rarity.statsScalarHigh)) * enemyType.attackScalar;
             defense = (NumberProcessor.getRandom(rarity.statsScalarLow,rarity.statsScalarHigh)) * enemyType.defenseScalar;

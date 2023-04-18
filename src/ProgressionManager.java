@@ -110,9 +110,9 @@ public class ProgressionManager {
         sleep(2000);
         System.out.println("Suddenly a stale air fills your lungs and your eyes open again");
         System.out.println("You find yourself in a desecrated cathedral. Pale light shines through broken mosaic windows");
-        sleep(5000);
+        sleep(2000);
         System.out.println("You bring yourself to your feet and you find that your wounds from battle have been healed");
-        sleep(5000);
+        sleep(2000);
         System.out.println("A voice pierces through your mind even though you can't see anyone");
         sleep(2000);
         System.out.println("Your journey is not over yet");
