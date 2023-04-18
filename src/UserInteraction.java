@@ -315,70 +315,73 @@ public class UserInteraction {
         System.out.println("You can now use these coins to upgrade your base stats. Any coins not spent will be lost");
         ProgressionManager.sleep(1000);
         System.out.println("It costs 1000 coins per upgrade");
-        int upgradeTimes = Main.character.coins/1000;
-        System.out.println("You can upgrade your base stats " + upgradeTimes +" times");
-        if(upgradeTimes == 0){
-            System.out.println("Since you cannot upgrade your character, you will now rise again");
-            ProgressionManager.sleep(2000);
-            System.out.println();
-            ProgressionManager progressionManager = new ProgressionManager();
-            ProgressionManager.returnPoint = 2;
-            Main.character.respawn();
-            progressionManager.startGame();
-        } else {
-            String userInput = "";
-            int statUpgradeCount = 0;
-            while(!userInput.equals("6")){
-                System.out.println("Which stat would you like to upgrade?");
-                System.out.println("Health is [0], Attack is [1], Defense is [2], Dexterity is [3], Intelligence is [4], and Mana is [5]     Finish is [6]");
-                Scanner scanner  = new Scanner(System.in);
-                userInput = scanner.nextLine();
-                if(userInput.equals("0") ||userInput.equals("1") || userInput.equals("2")|| userInput.equals("3")|| userInput.equals("4") || userInput.equals("5")){
-                    boolean enterUpgradeCount = false;
-                    while(!enterUpgradeCount){
-                        System.out.println("How many times would you like to upgrade this stat?");
-                        statUpgradeCount = scanner.nextInt();
-                        if(statUpgradeCount > upgradeTimes){
-                            System.out.println("Invalid Input");
-                        } else {
-                            upgradeTimes -= statUpgradeCount;
-                            enterUpgradeCount = true;
-                            switch (userInput){
-                                case "0":
-                                    Main.character.baseHealth += (2 * statUpgradeCount);
-                                    break;
-                                case "1":
-                                    Main.character.baseAttack += (2 * statUpgradeCount);
-                                    break;
-                                case "2":
-                                    Main.character.baseDefense += (2 * statUpgradeCount);
-                                    break;
-                                case "3":
-                                    Main.character.baseDexterity += (statUpgradeCount);
-                                    break;
-                                case "4":
-                                    Main.character.baseIntelligence += (2 * statUpgradeCount);
-                                    break;
-                                case "5":
-                                    Main.character.baseMana += (statUpgradeCount);
-                                    break;
-                            }
-                        }
-                    }
-                } else if(userInput.equals("6")){
-                    ProgressionManager progressionManager = new ProgressionManager();
-                    ProgressionManager.returnPoint = 2;
-                    System.out.println("\nYou will now rise again");
-                    ProgressionManager.sleep(2000);
-                    Main.character.respawn();
-                    progressionManager.startGame();
-                } else {
-                    System.out.println("Invalid Input");
-                }
-            }
-
-            System.out.println("Your new stats are: ");
-            Main.character.printEffectiveStats();
+        //int upgradeTimes =
+        System.out.println("You can upgrade your base stats " + Main.character.coins/1000 +" times");
+        while (checkCoins()){
+            userUpgradeStat();
         }
+        System.out.println("You cannot upgrade your character anymore");
+        ProgressionManager.sleep(2000);
+        restart();
+
+    }
+
+    private static void restart(){
+        System.out.println("Your new base stats are: ");
+        Main.character.printBaseStats();
+        ProgressionManager progressionManager = new ProgressionManager();
+        ProgressionManager.returnPoint = 2;
+        ProgressionManager.inCombat = false;
+        System.out.println("\nYou will now rise again");
+        ProgressionManager.sleep(2000);
+        Main.character.respawn();
+        progressionManager.startGame();
+    }
+    private static void userUpgradeStat(){
+        int upgradeTimes = Main.character.coins/1000;
+        int statUpgradeCount = 0;
+        System.out.println("Which stat would you like to upgrade?");
+        System.out.println("Health is [0], Attack is [1], Defense is [2], Dexterity is [3], Intelligence is [4], and Mana is [5]     Finish is [6]");
+        Scanner scanner  = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        if(userInput.equals("0") ||userInput.equals("1") || userInput.equals("2")|| userInput.equals("3")|| userInput.equals("4") || userInput.equals("5")){
+            System.out.println("How many times would you like to upgrade this stat?");
+            statUpgradeCount = scanner.nextInt();
+            if(statUpgradeCount > upgradeTimes){
+                System.out.println("You do not have the coins to complete this action");
+            } else if(statUpgradeCount >= 0) {
+                Main.character.coins -= (statUpgradeCount * 1000);
+                switch (userInput){
+                    case "0":
+                        Main.character.baseHealth += (2 * statUpgradeCount);
+                        break;
+                    case "1":
+                        Main.character.baseAttack += (2 * statUpgradeCount);
+                        break;
+                    case "2":
+                        Main.character.baseDefense += (2 * statUpgradeCount);
+                        break;
+                    case "3":
+                        Main.character.baseDexterity += (statUpgradeCount);
+                        break;
+                    case "4":
+                        Main.character.baseIntelligence += (2 * statUpgradeCount);
+                        break;
+                    case "5":
+                        Main.character.baseMana += (statUpgradeCount);
+                        break;
+                }
+                System.out.println("You have " + Main.character.coins + " coins left");
+            } else {
+                System.out.println("Invalid input");
+            }
+        } else if(userInput.equals("6")){
+            restart();
+        } else {
+            System.out.println("Invalid Input");
+        }
+    }
+    private static boolean checkCoins(){
+        return Main.character.coins / 1000 > 0;
     }
 }

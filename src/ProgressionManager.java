@@ -89,13 +89,11 @@ public class ProgressionManager {
         if(Main.character.isDead()){
             death();
         } else if(UserInteraction.enemyDefeated){
-            System.out.println("You're in the other place");
             inCombat = false;
             isLooting = true;
             UserInteraction.actionBar(isLooting);
         } else {
             //inCombat = true;
-            System.out.println("you're here");
             UserInteraction.actionBar(inCombat,isTrading,isLooting,enemy,Main.character);
         }
     }

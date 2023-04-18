@@ -86,7 +86,6 @@ public class PCharacter {
     }
     public void printEffectiveStats(){
         //ArrayList<Double> temp = getEffectiveStats();
-        System.out.println("\nCoins: " + coins);
         System.out.println("\nEffective stats:");
         System.out.println("Health: " + getEffectiveHealth());
         System.out.println("Attack: " + getEffectiveAttack());
@@ -97,6 +96,8 @@ public class PCharacter {
         System.out.println("Luck: " + baseLuck);
     }
     public void viewInventory(){
+        System.out.println("---- Inventory ----");
+        System.out.println("\nCoins: " + coins);
         Weapon temp = (Weapon) inventory.get(0);
         temp.printWeaponStats();
         Armor temp2 = (Armor) inventory.get(1);
@@ -121,9 +122,7 @@ public class PCharacter {
 
     public void runAway(NPC enemy){
         int randomNum = NumberProcessor.getRandom(0,100);
-        double compare = NumberProcessor.getRandom(0,50) * (1+ baseLuck/100) * (1+ baseDexterity/100);
-        System.out.println("randomNum: " +randomNum);
-        System.out.println("compare: " + compare);
+        double compare = NumberProcessor.getRandom(0,50) * (1+ baseLuck/100) * (1+ getEffectiveDex()/100);
         if(compare > randomNum){
             System.out.println("You have successfully left combat");
             ProgressionManager.inCombat = false;
@@ -134,15 +133,11 @@ public class PCharacter {
         }
     }
     public boolean isDead(){
-        if(currentHealth < 0){
-            System.out.println("dead");
-            return true;
-        }
-        System.out.println("not dead");
-        return false;
+        return currentHealth < 0;
     }
     public void respawn(){
         currentHealth = baseHealth;
+        coins = 0;
     }
 
 }
