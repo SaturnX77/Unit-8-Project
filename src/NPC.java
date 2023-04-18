@@ -94,9 +94,9 @@ public class NPC {
             temp = NpcType.ENEMY;
         }
        // temp = null;
-        npcType = temp;
+        npcType = temp; //switch this back to temp
         int tempNum;
-        System.out.println("NPC type: " + npcType);
+        //System.out.println("NPC type: " + npcType);
         if(npcType.equals(NpcType.ENEMY)){
             switch (worldType){
                 case CAVE:
@@ -216,8 +216,9 @@ public class NPC {
             health = (NumberProcessor.getRandom(rarity.statsScalarLow,rarity.statsScalarHigh)) * enemyType.healthScalar;
             printStats();
         } else if(npcType.equals(NpcType.MERCHANT)){
-            System.out.println("merchant wip");
+            //System.out.println("merchant wip");
             //add in artifact option later
+            ProgressionManager.isTrading = true;
             int rand = NumberProcessor.getRandom(0,2);
             switch (rand){
                 case 0:
@@ -261,5 +262,12 @@ public class NPC {
         System.out.println("Attack: " + attack);
         System.out.println("Defense: " + defense);
         System.out.println("Dexterity: " + dexterity);
+    }
+    public void viewTradeItem(){
+        if(tradeItem instanceof Weapon){
+            ((Weapon) tradeItem).printWeaponStats();
+        } else if(tradeItem instanceof Armor){
+            ((Armor) tradeItem).printArmorStats();
+        }
     }
 }

@@ -95,8 +95,10 @@ public class PCharacter {
         System.out.println("Mana: " + baseMana);
         System.out.println("Luck: " + baseLuck);
     }
+
+    //weapon is slot 0 armor is slot 1
     public void viewInventory(){
-        System.out.println("---- Inventory ----");
+        System.out.println("\n---- Your Inventory ----");
         System.out.println("\nCoins: " + coins);
         Weapon temp = (Weapon) inventory.get(0);
         temp.printWeaponStats();

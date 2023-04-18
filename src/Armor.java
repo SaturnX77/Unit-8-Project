@@ -70,7 +70,7 @@ public class Armor extends Item{
         System.out.println("Defense: " + getDefense());
         System.out.println("Dexterity Scalar: " + getDexterityScalar());
         System.out.println("Rarity: " + getRarity());
-        System.out.println("Value: " + getValue());
+        System.out.println("Value: " + getValue() + " coins");
     }
 
 }

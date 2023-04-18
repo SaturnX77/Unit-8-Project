@@ -117,7 +117,7 @@ public class Weapon extends Item{
         System.out.println("Name: " + getName());
         System.out.println("Attack: " + getAttack());
         System.out.println("Rarity: " + getRarity());
-        System.out.println("Value: " + getValue());
+        System.out.println("Value: " + getValue() + " coins");
         System.out.println("Class: " + getWeaponType());
     }
 

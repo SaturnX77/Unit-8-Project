@@ -39,7 +39,7 @@ public class UserInteraction {
         } else if(!trading){
             passiveActionBar();
         } else {
-            tradeActionBar();
+            tradeActionBar(enemy);
         }
     }
     private static void lootingActionBar(Weapon weapon, Armor armor){
@@ -197,16 +197,80 @@ public class UserInteraction {
            // ProgressionManager.inCombat = false;
         }
     }
-    private static void tradeActionBar(){
+    private static void tradeActionBar(NPC merchant){
+        System.out.println("You approach a person wearing long, fancy robes standing alongside a caravan of what appears to be weapons, armor, and artifacts");
+        Main.character.viewInventory();
         System.out.println("\nWhat would you like to?   [Trade][0]   [Leave][1]");
         switch (UserInteraction.getUserText()){
             case "0":
             case "trade":
                 //character trade
+                System.out.println("The person looks up as you approach them. They introduce themselves as a merchant");
+                System.out.println("Feel free to browse my wares");
+                System.out.println("--- Merchant's Wares ---");
+                merchant.viewTradeItem();
+                System.out.println("Would you like to trade your item for the merchant's item?   [Yes][0]   [No][1]");
+                String userInput = UserInteraction.getUserText().toLowerCase();
+                switch (userInput){
+                    case "yes":
+                    case "0":
+                        if(merchant.tradeItem instanceof Weapon){
+                            int cost = Main.character.inventory.get(0).value - merchant.tradeItem.value;
+                            System.out.println("Cost " + cost);
+                            if(cost < 0){
+                                int temp = Main.character.coins + cost;
+                                System.out.println("temp: " + temp);
+                                if(temp < 0){
+                                    System.out.println("You cannot afford this item");
+                                    System.out.println("\nYou leave the merchant. They are slightly upset that you tried to buy an item you can't afford");
+                                } else {
+                                    System.out.println("You have purchased this item for " +  Math.abs(cost) + " coins");
+                                    Main.character.coins += cost;
+                                    Main.character.inventory.set(0, merchant.tradeItem);
+                                    merchant.tradeItem = null;
+                                }
+                            } else {
+                                System.out.println("You have purchased this item and have been refunded " + cost + " coins");
+                                Main.character.coins += cost;
+                                Main.character.inventory.set(0, merchant.tradeItem);
+                            }
+                        } else if (merchant.tradeItem instanceof Armor){
+                            int cost = Main.character.inventory.get(1).value - merchant.tradeItem.value;
+                            System.out.println("Cost " + cost);
+                            if(cost < 0){
+                                int temp = Main.character.coins + cost;
+                                System.out.println("temp: " + temp);
+                                if(temp < 0){
+                                    System.out.println("You cannot afford this item");
+                                    System.out.println("\nYou leave the merchant. They are slightly upset that you tried to buy an item you can't afford");
+                                } else {
+                                    System.out.println("You have purchased this item for " + Math.abs(cost) + " coins");
+                                    Main.character.coins += cost;
+                                    Main.character.inventory.set(1, merchant.tradeItem);
+                                }
+                            } else {
+                                System.out.println("You have purchased this item and have been refunded " + cost + " coins");
+                                Main.character.coins += cost;
+                                Main.character.inventory.set(1, merchant.tradeItem);
+                                merchant.tradeItem = null;
+                            }
+                        }
+                        ProgressionManager.isTrading = false;
+                        ProgressionManager.turnManager();
+                        break;
+                    case "no":
+                    case "1":
+                        System.out.println("You leave the merchant");
+                        ProgressionManager.isTrading = false;
+                        ProgressionManager.turnManager();
+                        break;
+                }
                 break;
             case "1":
             case "leave":
                 //move forward
+                ProgressionManager.isTrading = false;
+                ProgressionManager.turnManager();
                 break;
         }
     }
