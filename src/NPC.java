@@ -266,6 +266,7 @@ public class NPC {
         System.out.println("Attack: " + attack);
         System.out.println("Defense: " + defense);
         System.out.println("Dexterity: " + dexterity);
+        System.out.println("Coins for defeat: " + value);
     }
     public void viewTradeItem(){
         if(tradeItem instanceof Weapon){

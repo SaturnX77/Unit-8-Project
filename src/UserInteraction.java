@@ -216,10 +216,10 @@ public class UserInteraction {
                     case "0":
                         if(merchant.tradeItem instanceof Weapon){
                             int cost = Main.character.inventory.get(0).value - merchant.tradeItem.value;
-                            System.out.println("Cost " + cost);
+                           // System.out.println("This item will cost you  " + cost + " coins");
                             if(cost < 0){
                                 int temp = Main.character.coins + cost;
-                                System.out.println("temp: " + temp);
+                               // System.out.println("temp: " + temp);
                                 if(temp < 0){
                                     System.out.println("You cannot afford this item");
                                     System.out.println("\nYou leave the merchant. They are slightly upset that you tried to buy an item you can't afford");
@@ -236,10 +236,10 @@ public class UserInteraction {
                             }
                         } else if (merchant.tradeItem instanceof Armor){
                             int cost = Main.character.inventory.get(1).value - merchant.tradeItem.value;
-                            System.out.println("Cost " + cost);
+                          //  System.out.println("This item will cost you  " + cost + " coins");
                             if(cost < 0){
                                 int temp = Main.character.coins + cost;
-                                System.out.println("temp: " + temp);
+                               // System.out.println("temp: " + temp);
                                 if(temp < 0){
                                     System.out.println("You cannot afford this item");
                                     System.out.println("\nYou leave the merchant. They are slightly upset that you tried to buy an item you can't afford");
