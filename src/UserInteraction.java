@@ -1,12 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserInteraction {
     static boolean enemyDefeated = false;
-
-    public UserInteraction(){
-        //welcome();
-    }
     public void welcome(){
         System.out.println("Welcome to The Eternal Archipelago");
         System.out.println("what will be your story?");
@@ -140,12 +137,20 @@ public class UserInteraction {
                     case "0":
                     case "attack":
                         //character attack
-                        attackEnemy(enemy);
+                        if(Main.character.getWeapon().isMagic){
+                            if(magicCasting()){
+                                System.out.println("Cast successful!\n");
+                                attackEnemy(enemy);
+                            } else {
+                                System.out.println("Cast failed\n");
+                            }
+                        } else {
+                            attackEnemy(enemy);
+                        }
                         if(enemy.health > 0){
                             attackCharacter(enemy);
                         }
                         ProgressionManager.turnManager(enemy);
-                        //actionBar(ProgressionManager.inCombat,ProgressionManager.isTrading,enemy,character);
                         break;
                     case "1":
                     case "heal":
@@ -155,13 +160,12 @@ public class UserInteraction {
                     case "2":
                     case "run away":
                         Main.character.runAway(enemy);
-                        //develop some sort of mechanic for this
                         break;
                 }
             }
         }
     }
-    private static void attackCharacter(NPC npc){
+    public static void attackCharacter(NPC npc){
         double randomNum = NumberProcessor.getRandom(0,101);
         randomNum = randomNum*(1+ (Main.character.getEffectiveDex()/200));
         if(randomNum <= 60){
@@ -169,11 +173,6 @@ public class UserInteraction {
             Main.character.subtractHealth(damage);
             System.out.println("You have taken " + damage + " damage");
             System.out.println("You have " + Main.character.getEffectiveHealth() + " health");
-//            if(Main.character.isDead()){
-//                ProgressionManager.inCombat = false;
-//              //  enemyDefeated = true;
-//                ProgressionManager.turnManager(npc);
-//            }
         } else {
             System.out.println("You have dodged the attack");
         }
@@ -194,7 +193,6 @@ public class UserInteraction {
             System.out.println("You have vanquished your enemy");
             Main.character.coins += npc.value;
             enemyDefeated = true;
-           // ProgressionManager.inCombat = false;
         }
     }
     private static void tradeActionBar(NPC merchant){
@@ -216,10 +214,8 @@ public class UserInteraction {
                     case "0":
                         if(merchant.tradeItem instanceof Weapon){
                             int cost = Main.character.inventory.get(0).value - merchant.tradeItem.value;
-                           // System.out.println("This item will cost you  " + cost + " coins");
                             if(cost < 0){
                                 int temp = Main.character.coins + cost;
-                               // System.out.println("temp: " + temp);
                                 if(temp < 0){
                                     System.out.println("You cannot afford this item");
                                     System.out.println("\nYou leave the merchant. They are slightly upset that you tried to buy an item you can't afford");
@@ -236,10 +232,8 @@ public class UserInteraction {
                             }
                         } else if (merchant.tradeItem instanceof Armor){
                             int cost = Main.character.inventory.get(1).value - merchant.tradeItem.value;
-                          //  System.out.println("This item will cost you  " + cost + " coins");
                             if(cost < 0){
                                 int temp = Main.character.coins + cost;
-                               // System.out.println("temp: " + temp);
                                 if(temp < 0){
                                     System.out.println("You cannot afford this item");
                                     System.out.println("\nYou leave the merchant. They are slightly upset that you tried to buy an item you can't afford");
@@ -268,7 +262,6 @@ public class UserInteraction {
                 break;
             case "1":
             case "leave":
-                //move forward
                 ProgressionManager.isTrading = false;
                 ProgressionManager.turnManager();
                 break;
@@ -379,7 +372,6 @@ public class UserInteraction {
         System.out.println("You can now use these coins to upgrade your base stats. Any coins not spent will be lost");
         ProgressionManager.sleep(1000);
         System.out.println("It costs 1000 coins per upgrade");
-        //int upgradeTimes =
         System.out.println("You can upgrade your base stats " + Main.character.coins/1000 +" times");
         while (checkCoins()){
             userUpgradeStat();
@@ -387,11 +379,10 @@ public class UserInteraction {
         System.out.println("You cannot upgrade your character anymore");
         ProgressionManager.sleep(2000);
         restart();
-
     }
 
     private static void restart(){
-        System.out.println("Your new base stats are: ");
+        System.out.println("\nYour new base stats are: ");
         Main.character.printBaseStats();
         ProgressionManager progressionManager = new ProgressionManager();
         ProgressionManager.returnPoint = 2;
@@ -403,7 +394,7 @@ public class UserInteraction {
     }
     private static void userUpgradeStat(){
         int upgradeTimes = Main.character.coins/1000;
-        int statUpgradeCount = 0;
+        int statUpgradeCount;
         System.out.println("Which stat would you like to upgrade?");
         System.out.println("Health is [0], Attack is [1], Defense is [2], Dexterity is [3], Intelligence is [4], and Mana is [5]     Finish is [6]");
         Scanner scanner  = new Scanner(System.in);
@@ -447,5 +438,57 @@ public class UserInteraction {
     }
     private static boolean checkCoins(){
         return Main.character.coins / 1000 > 0;
+    }
+
+    private static boolean magicCasting(){
+        System.out.println("You are using a magic weapon. Prepare for casting");
+        int[] nums = new int[4];
+        for(int i = 0; i < nums.length; i++){
+            nums[i] = NumberProcessor.getRandom(0,100);
+        }
+        System.out.println(Arrays.toString(nums));
+        int binaryValue = NumberProcessor.getRandom(0,2);
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+        switch (binaryValue){
+            case 0:
+                System.out.println("Sort these numbers from least to greatest. Separate each number with a comma");
+                userInput = scanner.nextLine();
+                int[] sorted = NumberProcessor.bubbleSort(nums);
+                return parseUserStringAndCompare(userInput, sorted);
+//                System.out.println(Arrays.toString(sorted));
+            //    break;
+            case 1:
+                System.out.println("Sort these numbers from greatest to least. Separate each number with a comma");
+                userInput = scanner.nextLine();
+                int[] sorted2 = NumberProcessor.insertionSort(nums);
+                return parseUserStringAndCompare(userInput, sorted2);
+//                System.out.println(Arrays.toString(sorted2));
+             //   break;
+        }
+        return false;
+    }
+
+    private static boolean parseUserStringAndCompare(String userInput, int[] computerSolve){
+        String workingInput = userInput.replaceAll("\\s", "");
+        ArrayList<Integer> userResult = new ArrayList<>();
+        StringBuilder temp = new StringBuilder();
+        for(int i = 0; i < workingInput.length(); i++){
+            if(workingInput.charAt(i) != ','){
+                temp.append(workingInput.charAt(i));
+            } else {
+                userResult.add(Integer.parseInt(temp.toString()));
+                temp = new StringBuilder();
+            }
+        }
+        userResult.add(Integer.parseInt(temp.toString()));
+        boolean correct = true;
+        for(int i = 0; i < computerSolve.length; i ++){
+            if(computerSolve[i] != userResult.get(i)){
+                correct = false;
+                break;
+            }
+        }
+        return correct;
     }
 }

@@ -5,17 +5,20 @@ public class Weapon extends Item{
     double dexScalar = 1.0;
     String name;
     double attackScalar = 1.0;
+    boolean isMagic;
     public enum WeaponType {
-        AXE(0.7, 1.5),
-        STAFF(0.7, 1.5),
-        SWORD(1.1, 1.3),
-        GRIMOIRE(1.2, 1.1),
-        DAGGER(1.4, 0.8),
-        BOW(1.7, 0.7);
+        AXE(0.7, 1.5, false),
+        STAFF(0.7, 1.5, true),
+        SWORD(1.1, 1.3, false),
+        GRIMOIRE(1.2, 1.1, true),
+        DAGGER(1.4, 0.8, false),
+        BOW(1.7, 0.7, false);
         final double dexScalar;
         final double attackScalar;
+        final boolean isMagic;
 
-        WeaponType(double dexScalar, double attackScalar) {
+        WeaponType(double dexScalar, double attackScalar, boolean isMagic) {
+            this.isMagic = isMagic;
             this.attackScalar = attackScalar;
             this.dexScalar = dexScalar;
         }
@@ -30,26 +33,33 @@ public class Weapon extends Item{
             case 0: //AXE
                 setWeaponClass(WeaponType.AXE);
                 setDexScalar(WeaponType.AXE.dexScalar);
+                setMagic(WeaponType.AXE.isMagic);
                 break;
             case 1: //STAFF
                 setWeaponClass(WeaponType.STAFF);
                 setDexScalar(WeaponType.STAFF.dexScalar);
+                setMagic(WeaponType.STAFF.isMagic);
                 break;
             case 2: //SWORD
                 setWeaponClass(WeaponType.SWORD);
                 setDexScalar(WeaponType.SWORD.dexScalar);
+                setMagic(WeaponType.SWORD.isMagic);
                 break;
             case 3: //GRIMOIRE
                 setWeaponClass(WeaponType.GRIMOIRE);
                 setDexScalar(WeaponType.GRIMOIRE.dexScalar);
+                setMagic(WeaponType.GRIMOIRE.isMagic);
                 break;
             case 4: //DAGGER
                 setWeaponClass(WeaponType.DAGGER);
                 setDexScalar(WeaponType.DAGGER.dexScalar);
+                setMagic(WeaponType.DAGGER.isMagic);
                 break;
             case 5: //BOW
                 setWeaponClass(WeaponType.BOW);
                 setDexScalar(WeaponType.BOW.dexScalar);
+                setMagic(WeaponType.BOW.isMagic);
+                break;
 
         }
         Rarity rarity = getRarity();
@@ -91,7 +101,9 @@ public class Weapon extends Item{
     public void setAttack(int low, int high, WeaponType weaponType){
         setAttack(NumberProcessor.getRandom(low,high) * weaponType.attackScalar);
     }
-
+    private void setMagic(boolean isMagic){
+        this.isMagic = isMagic;
+    }
     public void setDexScalar(double dexScalar) {
         this.dexScalar = dexScalar;
     }

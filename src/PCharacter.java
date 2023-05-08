@@ -85,7 +85,6 @@ public class PCharacter {
         System.out.println("Luck: " + baseLuck);
     }
     public void printEffectiveStats(){
-        //ArrayList<Double> temp = getEffectiveStats();
         System.out.println("\nEffective stats:");
         System.out.println("Health: " + getEffectiveHealth());
         System.out.println("Attack: " + getEffectiveAttack());
@@ -104,6 +103,10 @@ public class PCharacter {
         temp.printWeaponStats();
         Armor temp2 = (Armor) inventory.get(1);
         temp2.printArmorStats();
+    }
+
+    public Weapon getWeapon(){
+        return (Weapon) inventory.get(0);
     }
     public void rest(){
         //heals you back to full hp
@@ -131,6 +134,7 @@ public class PCharacter {
             ProgressionManager.turnManager();
         } else {
             System.out.println("You have failed to escape");
+            UserInteraction.attackCharacter(enemy);
             ProgressionManager.turnManager(enemy);
         }
     }
