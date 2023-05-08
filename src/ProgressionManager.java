@@ -89,6 +89,7 @@ public class ProgressionManager {
         if(Main.character.isDead()){
             death();
         } else if(UserInteraction.enemyDefeated){
+            UserInteraction.runCounter = 0;
             inCombat = false;
             isLooting = true;
             UserInteraction.actionBar(isLooting);

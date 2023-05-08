@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
 public class UserInteraction {
+    static int runCounter = 0;
     static boolean enemyDefeated = false;
     public void welcome(){
         System.out.println("Welcome to The Eternal Archipelago");
@@ -159,7 +159,14 @@ public class UserInteraction {
                         break;
                     case "2":
                     case "run away":
-                        Main.character.runAway(enemy);
+                        if(runCounter % 2 == 0){
+                            runCounter++;
+                            Main.character.runAway(enemy);
+                        } else {
+                            runCounter+= NumberProcessor.getRandom(0,2);
+                            System.out.println("You cannot run away again right now");
+                            combatActionBar(enemy,character);
+                        }
                         break;
                 }
             }
