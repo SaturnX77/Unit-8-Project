@@ -165,6 +165,7 @@ public class UserInteraction {
                         } else {
                             runCounter+= NumberProcessor.getRandom(0,2);
                             System.out.println("You cannot run away again right now");
+                            attackCharacter(enemy);
                             combatActionBar(enemy,character);
                         }
                         break;
@@ -200,6 +201,7 @@ public class UserInteraction {
             System.out.println("You have vanquished your enemy");
             Main.character.coins += npc.value;
             enemyDefeated = true;
+            runCounter = 0;
         }
     }
     private static void tradeActionBar(NPC merchant){

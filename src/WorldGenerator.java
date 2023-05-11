@@ -1,10 +1,9 @@
-import java.time.Period;
 import java.util.ArrayList;
 
 public class WorldGenerator {
     //public int movesLeft = NumberProcessor.getRandom(4,8);
     public int globalMovesLeft;
-    public int globalMovesinTile;
+    public int globalMovesInTile;
     //public boolean inTile = true;
     WorldType worldType;
     WorldType previousTile = null;
@@ -15,6 +14,7 @@ public class WorldGenerator {
         ANCIENT_RUINS(0.5,0.0,0),
         FOREST(0.6,0.1,0),
         ATLANTIS(0.7,0.0,0),
+        STORY(0.0,0.0,0),
         CASTLE(1,0,1);
         final double monsterChance;
         final double merchantChance;
@@ -30,16 +30,14 @@ public class WorldGenerator {
     public WorldType getWorldType(){
         return worldType;
     }
-    public WorldGenerator(){
-    }
 
     public void subtractMoves(){
-        if(globalMovesLeft == 0){
+        if(globalMovesLeft <= 0){
             exitTile();
             generateWorldTile();
            // movesLeft = NumberProcessor.getRandom(4,8);
-            globalMovesinTile = NumberProcessor.getRandom(4,8);
-            globalMovesLeft = globalMovesinTile;
+            globalMovesInTile = NumberProcessor.getRandom(4,8);
+            globalMovesLeft = globalMovesInTile;
         }
         globalMovesLeft--;
     }
@@ -62,6 +60,9 @@ public class WorldGenerator {
                 break;
             case ATLANTIS:
                 System.out.println("You feel those same hands that pulled you down from earlier. They grab your waist and suddenly you're flung out of the water. You can finally breathe fresh air again. You have exited the sunken city");
+                break;
+            case STORY:
+                System.out.println("Exiting story environment");
                 break;
             case CASTLE:
                 System.out.println("yea dis the end of the game but you aren't supposed to be here");
@@ -97,6 +98,9 @@ public class WorldGenerator {
                 printEnv(worldType);
                 System.out.println("You find yourself at the edge of a lake. Suddenly invisible hands drag you into the water and a bubble of air appears around your head. You have entered the sunken city");
                 break;
+            case STORY:
+                System.out.println("Entering story environment");
+                break;
             case CASTLE:
                 printEnv(worldType);
                 System.out.println("You find yourself at the foot of a towering castle. Its stony walls seems to stretch up near infinitely into the sky");
@@ -120,14 +124,19 @@ public class WorldGenerator {
     }
 
     public void generateWorldTile(){
-        globalMovesinTile = NumberProcessor.getRandom(4,8);
-        globalMovesLeft = globalMovesinTile;
+        globalMovesInTile = NumberProcessor.getRandom(4,8);
+        globalMovesLeft = globalMovesInTile;
         WorldType temp = null;
-        double randomNum = NumberProcessor.getRandom(0,101);
+        double randomNum = NumberProcessor.getRandom(0,19);
+        //set this back to 101 on the high limit^
         randomNum = randomNum*(1+ (ProgressionManager.gameProgressionTurns/30.0));
-       // System.out.println("world gen:" + randomNum)
-       // randomNum = 100; //kill this later
-        if(randomNum <= 20){
+        // System.out.println("world gen:" + randomNum)
+        // randomNum = 100; //kill this later
+        if(randomNum <= 10){
+            temp = WorldType.STORY;
+            globalMovesInTile = 1;
+            globalMovesLeft = 0;
+        } else if(randomNum <= 20){
             temp = WorldType.PLAIN;
         } else if(randomNum<= 30){
             temp = WorldType.ATLANTIS;
@@ -145,6 +154,9 @@ public class WorldGenerator {
         worldType = temp;
         if(worldType.equals(previousTile)){
             generateWorldTile();
+        } else if(worldType.equals(WorldType.STORY)){
+            enterTile();
+            StoryManager.newStory();
         } else {
             previousTile = temp;
             enterTile();

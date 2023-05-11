@@ -47,7 +47,9 @@ public class ProgressionManager {
 
     }
     public static void moveForward(){
-        if(worldGenerator.globalMovesLeft == worldGenerator.globalMovesinTile){
+        System.out.println("globalMovesInTile: " + worldGenerator.globalMovesInTile);
+        System.out.println("globalMovesLeft: " +worldGenerator.globalMovesLeft);
+        if(worldGenerator.globalMovesLeft == worldGenerator.globalMovesInTile){
             worldGenerator.generateWorldTile();
         }
         worldGenerator.subtractMoves();
