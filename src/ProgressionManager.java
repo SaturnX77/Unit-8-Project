@@ -22,7 +22,7 @@ public class ProgressionManager {
         }
         System.out.println("You are lying on a beach. The sandy particles are everywhere in your clothes and you can hear waves crashing behind you");
         System.out.println("What do you do?   [look around][0]   [nothing][1]");
-        String userInput = UserInteraction.getUserText();
+        String userInput = UserInteraction.getUserText("look around,0,nothing,1");
         switch (userInput){
             case "0":
             case "look around":

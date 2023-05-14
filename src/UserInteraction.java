@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class UserInteraction {
     static int runCounter = 0;
     static boolean enemyDefeated = false;
+   // static ArrayList<String> inputs = new ArrayList<>();
     public void welcome(){
         System.out.println("Welcome to The Eternal Archipelago");
         System.out.println("what will be your story?");
@@ -12,15 +13,59 @@ public class UserInteraction {
         progressionManager.startGame();
     }
     private void characterSelect(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Select your character");
         System.out.println("Elf [0], Human [1], Dwarf [2], Dragonborn [3], Gnome [4]");
-        int choice = scanner.nextInt();
+        String choice = UserInteraction.getUserText("0,1,2,3,4");
         printRaceStats(choice);
     }
-    public static String getUserText(){
+    public static String getUserText(String possibleInputs){
+        String userInput = "";
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine().toLowerCase();
+        if(possibleInputs.equals("no letters")){
+            boolean isInValid = false;
+            while(!isInValid){
+                userInput = scanner.nextLine();
+                for(int i = 0; i < userInput.length(); i++){
+                    if(Character.isDigit(userInput.charAt(i)) || userInput.charAt(i) == ','){
+                        isInValid = true;
+                    } else {
+                        isInValid = false;
+                        break;
+                    }
+                }
+                if(!isInValid){
+                    System.out.println("Invalid response");
+                }
+            }
+
+        } else {
+            ArrayList<String> validInputs = new ArrayList<>();
+            StringBuilder temp = new StringBuilder();
+            for(int i = 0; i < possibleInputs.length(); i++) {
+                if (possibleInputs.charAt(i) != ',') {
+                    temp.append(possibleInputs.charAt(i));
+                } else {
+                    validInputs.add(temp.toString());
+                    temp = new StringBuilder();
+                }
+            }
+            validInputs.add(temp.toString());
+
+            boolean validInput = false;
+            while(!validInput) {
+                userInput =  scanner.nextLine().toLowerCase();
+                for(String input : validInputs){
+                    if (input.equals(userInput)) {
+                        validInput = true;
+                        break;
+                    }
+                }
+                if(!validInput){
+                    System.out.println("Please enter a valid input");
+                }
+            }
+        }
+        return userInput;
     }
     public static void actionBar(){
         passiveActionBar();
@@ -50,7 +95,7 @@ public class UserInteraction {
                 Weapon tempWeapon = new Weapon(Main.character);
                 tempWeapon.printWeaponStats();
                 System.out.println("Would you like to replace your weapon?   [Yes][0]   [No][1]");
-                temp = UserInteraction.getUserText().toLowerCase();
+                temp = UserInteraction.getUserText("yes,0,no,1").toLowerCase();
                 switch (temp){
                     case "0":
                     case "yes":
@@ -70,8 +115,7 @@ public class UserInteraction {
                 Armor tempArmor = new Armor(Main.character);
                 tempArmor.printArmorStats();
                 System.out.println("Would you like to replace your armor?   [Yes][0]   [No][1]");
-                temp = UserInteraction.getUserText().toLowerCase();
-                switch (temp){
+                switch (UserInteraction.getUserText("yes,0,no,1").toLowerCase()){
                     case "0":
                     case "yes":
                         Main.character.inventory.set(1,tempArmor);
@@ -89,7 +133,7 @@ public class UserInteraction {
     }
     private static void passiveActionBar(){
         System.out.println("\nWhat would you like to?   [Move Forward][0]   [View Inventory][1]   [See Stats][2]   [Rest][3]");
-        switch (UserInteraction.getUserText()){
+        switch (UserInteraction.getUserText("move forward,0,view inventory,1,see stats,2,rest,3")){
             case "0":
             case "move forward":
                 ProgressionManager.moveForward();
@@ -133,7 +177,7 @@ public class UserInteraction {
                 ProgressionManager.turnManager(enemy);
             } else {
                 System.out.println("\nWhat would you like to?   [Attack][0]   [Heal][1]   [Run Away][2]");
-                switch (UserInteraction.getUserText()){
+                switch (UserInteraction.getUserText("attack,0,heal,1,run away,2")){
                     case "0":
                     case "attack":
                         //character attack
@@ -208,7 +252,7 @@ public class UserInteraction {
         System.out.println("You approach a person wearing long, fancy robes standing alongside a caravan of what appears to be weapons, armor, and artifacts");
         Main.character.viewInventory();
         System.out.println("\nWhat would you like to?   [Trade][0]   [Leave][1]");
-        switch (UserInteraction.getUserText()){
+        switch (UserInteraction.getUserText("trade,0,leave,1")){
             case "0":
             case "trade":
                 //character trade
@@ -217,7 +261,7 @@ public class UserInteraction {
                 System.out.println("--- Merchant's Wares ---");
                 merchant.viewTradeItem();
                 System.out.println("Would you like to trade your item for the merchant's item?   [Yes][0]   [No][1]");
-                String userInput = UserInteraction.getUserText().toLowerCase();
+                String userInput = UserInteraction.getUserText("yes,0,no,1").toLowerCase();
                 switch (userInput){
                     case "yes":
                     case "0":
@@ -276,9 +320,9 @@ public class UserInteraction {
                 break;
         }
     }
-    private void printRaceStats(int choice){
+    private void printRaceStats(String choice){
         switch (choice){
-            case 0 :
+            case "0" :
                 System.out.println("Race: Elf");
                 System.out.println("Base Health: 70");
                 System.out.println("Base Attack: 40");
@@ -290,7 +334,7 @@ public class UserInteraction {
                 printCharacterPreview("elf");
                 confirmCharacter("elf");
                 break;
-            case 1 :
+            case "1" :
                 System.out.println("Race: Human");
                 System.out.println("Base Health: 80");
                 System.out.println("Base Attack: 50");
@@ -302,7 +346,7 @@ public class UserInteraction {
                 printCharacterPreview("human");
                 confirmCharacter("human");
                 break;
-            case 2 :
+            case "2" :
                 System.out.println("Race: Dwarf");
                 System.out.println("Base Health: 90");
                 System.out.println("Base Attack: 55");
@@ -314,7 +358,7 @@ public class UserInteraction {
                 printCharacterPreview("dwarf");
                 confirmCharacter("dwarf");
                 break;
-            case 3 :
+            case "3" :
                 System.out.println("Race: Dragonborn");
                 System.out.println("Base Health: 110");
                 System.out.println("Base Attack: 70");
@@ -326,7 +370,7 @@ public class UserInteraction {
                 printCharacterPreview("dragonborn");
                 confirmCharacter("dragonborn");
                 break;
-            case 4 :
+            case "4" :
                 System.out.println("Race: Gnome");
                 System.out.println("Base Health: 50");
                 System.out.println("Base Attack: 30");
@@ -342,9 +386,8 @@ public class UserInteraction {
     }
 
     private void confirmCharacter(String race){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Confirm Selection? [Yes][0]   [No][1]");
-        String answer = scanner.next();
+        String answer = getUserText("yes,0,no,1");
         if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("0")){
             switch (race){
                 case "elf" :
@@ -407,7 +450,7 @@ public class UserInteraction {
         System.out.println("Which stat would you like to upgrade?");
         System.out.println("Health is [0], Attack is [1], Defense is [2], Dexterity is [3], Intelligence is [4], and Mana is [5]     Finish is [6]");
         Scanner scanner  = new Scanner(System.in);
-        String userInput = scanner.nextLine();
+        String userInput = getUserText("0,1,2,3,4,5,6");
         if(userInput.equals("0") ||userInput.equals("1") || userInput.equals("2")|| userInput.equals("3")|| userInput.equals("4") || userInput.equals("5")){
             System.out.println("How many times would you like to upgrade this stat?");
             statUpgradeCount = scanner.nextInt();
@@ -457,23 +500,16 @@ public class UserInteraction {
         }
         System.out.println(Arrays.toString(nums));
         int binaryValue = NumberProcessor.getRandom(0,2);
-        Scanner scanner = new Scanner(System.in);
         String userInput;
         switch (binaryValue){
             case 0:
                 System.out.println("Sort these numbers from least to greatest. Separate each number with a comma");
-                userInput = scanner.nextLine();
                 int[] sorted = NumberProcessor.bubbleSort(nums);
-                return parseUserStringAndCompare(userInput, sorted);
-//                System.out.println(Arrays.toString(sorted));
-            //    break;
+                return parseUserStringAndCompare(getUserText("no letters"), sorted);
             case 1:
                 System.out.println("Sort these numbers from greatest to least. Separate each number with a comma");
-                userInput = scanner.nextLine();
                 int[] sorted2 = NumberProcessor.insertionSort(nums);
-                return parseUserStringAndCompare(userInput, sorted2);
-//                System.out.println(Arrays.toString(sorted2));
-             //   break;
+                return parseUserStringAndCompare(getUserText("no letters"), sorted2);
         }
         return false;
     }
