@@ -100,6 +100,7 @@ public class NPC {
         if(npcType.equals(NpcType.ENEMY)){
             switch (worldType){
                 case CAVE:
+                case STORY_COMBAT_CAVE:
                     tempNum = NumberProcessor.getRandom(0,6);
                     switch (tempNum){
                         case 0:

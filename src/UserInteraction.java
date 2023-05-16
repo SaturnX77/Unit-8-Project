@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class UserInteraction {
     static int runCounter = 0;
     static boolean enemyDefeated = false;
+    static Scanner scanner = new Scanner(System.in);
    // static ArrayList<String> inputs = new ArrayList<>();
     public void welcome(){
         System.out.println("Welcome to The Eternal Archipelago");
@@ -20,7 +21,6 @@ public class UserInteraction {
     }
     public static String getUserText(String possibleInputs){
         String userInput = "";
-        Scanner scanner = new Scanner(System.in);
         if(possibleInputs.equals("no letters")){
             boolean isInValid = false;
             while(!isInValid){
@@ -34,7 +34,7 @@ public class UserInteraction {
                     }
                 }
                 if(!isInValid){
-                    System.out.println("Invalid response");
+                    System.out.println("Please enter a valid input");
                 }
             }
 
@@ -229,11 +229,11 @@ public class UserInteraction {
             System.out.println("You have dodged the attack");
         }
     }
-    private static void attackEnemy(NPC npc){
+    public static void attackEnemy(NPC npc){
         double randomNum = NumberProcessor.getRandom(0,101);
         randomNum = randomNum*(1+ (npc.dexterity/200));
         if(randomNum <= 60){
-            double damage = npc.attack / (npc.defense/100);
+            double damage = Main.character.getEffectiveAttack() / (npc.defense/100);
             npc.subtractHealth(damage);
             System.out.println("Enemy has taken " + damage + " damage");
             System.out.println("It has " + npc.health + " health left");
@@ -439,6 +439,7 @@ public class UserInteraction {
         ProgressionManager progressionManager = new ProgressionManager();
         ProgressionManager.returnPoint = 2;
         ProgressionManager.inCombat = false;
+        StoryManager.usedStories = new ArrayList<>();
         System.out.println("\nYou will now rise again");
         ProgressionManager.sleep(2000);
         Main.character.respawn();
@@ -492,7 +493,7 @@ public class UserInteraction {
         return Main.character.coins / 1000 > 0;
     }
 
-    private static boolean magicCasting(){
+    public static boolean magicCasting(){
         System.out.println("You are using a magic weapon. Prepare for casting");
         int[] nums = new int[4];
         for(int i = 0; i < nums.length; i++){
@@ -500,7 +501,6 @@ public class UserInteraction {
         }
         System.out.println(Arrays.toString(nums));
         int binaryValue = NumberProcessor.getRandom(0,2);
-        String userInput;
         switch (binaryValue){
             case 0:
                 System.out.println("Sort these numbers from least to greatest. Separate each number with a comma");
@@ -514,7 +514,7 @@ public class UserInteraction {
         return false;
     }
 
-    private static boolean parseUserStringAndCompare(String userInput, int[] computerSolve){
+    public static boolean parseUserStringAndCompare(String userInput, int[] computerSolve){
         String workingInput = userInput.replaceAll("\\s", "");
         ArrayList<Integer> userResult = new ArrayList<>();
         StringBuilder temp = new StringBuilder();

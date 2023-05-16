@@ -3,6 +3,8 @@ public class ProgressionManager {
     static boolean inCombat = false;
     static boolean isTrading = false;
     static boolean isLooting = false;
+
+
     static WorldGenerator worldGenerator = new WorldGenerator();
     public static int gameProgressionTurns = 0;
     public void startGame(){
@@ -15,6 +17,7 @@ public class ProgressionManager {
             sleep(1000);
             System.out.println(".");
             sleep(1000);
+            System.out.println("Your head is foggy and you have no memory of anything");
             returnPoint = 1;
         }
         if (returnPoint == 2){
@@ -47,8 +50,8 @@ public class ProgressionManager {
 
     }
     public static void moveForward(){
-        System.out.println("globalMovesInTile: " + worldGenerator.globalMovesInTile);
-        System.out.println("globalMovesLeft: " +worldGenerator.globalMovesLeft);
+//        System.out.println("globalMovesInTile: " + worldGenerator.globalMovesInTile);
+//        System.out.println("globalMovesLeft: " +worldGenerator.globalMovesLeft);
         if(worldGenerator.globalMovesLeft == worldGenerator.globalMovesInTile){
             worldGenerator.generateWorldTile();
         }
@@ -97,15 +100,36 @@ public class ProgressionManager {
             UserInteraction.actionBar(isLooting);
         } else {
             //inCombat = true;
-            UserInteraction.actionBar(inCombat,isTrading,isLooting,enemy,Main.character);
+            UserInteraction.actionBar(inCombat,isTrading,isLooting, enemy,Main.character);
         }
     }
+//    public static void turnManager(NPC enemy, boolean story){
+//        if(Main.character.isDead()){
+//            if(story){
+//                inStory = false;
+//            }
+//            death();
+//        } else if(UserInteraction.enemyDefeated){
+//            UserInteraction.runCounter = 0;
+//            inCombat = false;
+//            isLooting = true;
+//            if(story){
+//                UserInteraction.storyActionBar();
+//            } else {
+//                UserInteraction.actionBar(isLooting, story);
+//            }
+//        } else {
+//            //inCombat = true;
+//            UserInteraction.actionBar(inCombat,isTrading,isLooting,true,enemy,Main.character);
+//        }
+//    }
     public static void turnManager(){
         if(Main.character.isDead()){
             death();
         } else {
             isLooting = false;
             UserInteraction.actionBar();
+
         }
     }
     public static void death(){

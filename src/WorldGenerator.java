@@ -15,6 +15,7 @@ public class WorldGenerator {
         FOREST(0.6,0.1,0),
         ATLANTIS(0.7,0.0,0),
         STORY(0.0,0.0,0),
+        STORY_COMBAT_CAVE(1.0,0.0,1),
         CASTLE(1,0,1);
         final double monsterChance;
         final double merchantChance;
@@ -99,7 +100,7 @@ public class WorldGenerator {
                 System.out.println("You find yourself at the edge of a lake. Suddenly invisible hands drag you into the water and a bubble of air appears around your head. You have entered the sunken city");
                 break;
             case STORY:
-                System.out.println("Entering story environment");
+                System.out.println("Entering story environment\n");
                 break;
             case CASTLE:
                 printEnv(worldType);
@@ -127,7 +128,7 @@ public class WorldGenerator {
         globalMovesInTile = NumberProcessor.getRandom(4,8);
         globalMovesLeft = globalMovesInTile;
         WorldType temp = null;
-        double randomNum = NumberProcessor.getRandom(0,101);
+        double randomNum = NumberProcessor.getRandom(0,19);
         //set this back to 101 on the high limit^
         randomNum = randomNum*(1+ (ProgressionManager.gameProgressionTurns/30.0));
         // System.out.println("world gen:" + randomNum)
