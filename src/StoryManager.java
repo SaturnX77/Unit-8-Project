@@ -114,7 +114,7 @@ public class StoryManager {
                 ProgressionManager.sleep(1000);
                 System.out.println("\nYou shake your head. You still don't know what's going on\n");
                 ProgressionManager.sleep(1000);
-                System.out.println("\n You hear the leader mutter something under their breath 'interesting, most interesting'\n");
+                System.out.println("You hear the leader mutter something under their breath 'interesting, most interesting'\n");
                 ProgressionManager.sleep(1000);
                 System.out.println("They lead you outside and point into the distance at a range of towering mountains and give you a smile. Do you accept my warrior?");
                 ProgressionManager.sleep(1000);
@@ -222,15 +222,8 @@ public class StoryManager {
                         ProgressionManager.sleep(1000);
                         System.out.println("Suddenly you get the feeling you aren't alone");
                         storyCombat();
-                        //NPC enemy = new NPC(WorldGenerator.WorldType.CAVE, Main.character);
-//                        ProgressionManager.turnManager(enemy);
-//                        ProgressionManager.inCombat = false;
-//                        if(enemy.health > 0){
-//                            case0Position = 2;
-//                            exitStory();
-//                        }
                         ProgressionManager.sleep(1000);
-                        System.out.println("The slain enemy lays at your feet, its blood soaking into the icy floor");
+                        System.out.println("The slain enemy lays at your feet, its remains littering the icy floor");
                         ProgressionManager.sleep(1000);
                         System.out.println("You sheathe your weapon and keep moving forward");
                         ProgressionManager.sleep(1000);
@@ -322,6 +315,10 @@ public class StoryManager {
     //---------------------------------------------------Village Story Bottom-------------------------------------------------------------
 
 
+    //-----------------------------------------------------Mansion Story Top--------------------------------------------------------------
+    private static void abandonedLab(){
+
+    }
 
 
     //---------------------------------------------------Combat Mechanics Top-------------------------------------------------------------
@@ -343,7 +340,7 @@ public class StoryManager {
                 if(enemy.dexterity > character.getEffectiveDex()){
                     ProgressionManager.sleep(200);
                     System.out.println("\nEnemy attacks first");
-                    UserInteraction.attackEnemy(enemy);
+                    UserInteraction.attackCharacter(enemy);
                 }
                 if(character.isDead()){
                     //  ProgressionManager.inCombat = false;

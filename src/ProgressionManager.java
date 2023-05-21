@@ -72,6 +72,10 @@ public class ProgressionManager {
         System.out.println("You have acquired a new set of armor");
         Main.character.inventory.set(1, new Armor(Main.character));
     }
+    public void giveArtifact(){
+        System.out.println("You have acquired a new artifact");
+        Main.character.inventory.set(2, new Artifact());
+    }
     private void doNothing(){
         sleep(1000);
         System.out.println(".");

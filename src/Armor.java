@@ -5,16 +5,14 @@ public class Armor extends Item{
     double defense = 0.0;
     double dexterityScalar = 1.0;
     public Armor(PCharacter character){
-        setRarity((int)character.baseLuck);
+        setRarity((int)character.getEffectiveLuck());
         setValue(getRarity());
         switch (rarity){
             case COMMON:
                 setDefense(30,50);
-                // temp.setAttack(NumberProcessor.getRandom(30,50) * Weapon.weaponClass.AXE.attackScalar);
                 break;
             case UNCOMMON:
                 setDefense(50,70);
-                // temp.setAttack(NumberProcessor.getRandom(50,70) * Weapon.weaponClass.AXE.attackScalar);
                 break;
             case RARE:
                 setDefense(70,90);

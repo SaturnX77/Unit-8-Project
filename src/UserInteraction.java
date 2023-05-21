@@ -234,6 +234,9 @@ public class UserInteraction {
         randomNum = randomNum*(1+ (npc.dexterity/200));
         if(randomNum <= 60){
             double damage = Main.character.getEffectiveAttack() / (npc.defense/100);
+            if(Main.character.getWeapon().isMagic){
+                damage *= (((Main.character.getEffectiveInt()) + (Main.character.getEffectiveMana())) / 200);
+            }
             npc.subtractHealth(damage);
             System.out.println("Enemy has taken " + damage + " damage");
             System.out.println("It has " + npc.health + " health left");

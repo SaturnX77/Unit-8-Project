@@ -5,7 +5,6 @@ public class PCharacter {
     double baseAttack;
     double baseDefense;
     double baseDexterity;
-    double effectiveDex;
     double baseIntelligence;
     double baseMana;
     double baseLuck;
@@ -18,7 +17,7 @@ public class PCharacter {
         inventory.add(null);
         inventory.add(null);
         inventory.add(null);
-        inventory.add(null);
+       // inventory.add(null);
     }
     public void setStats(double baseHealth,double baseAttack,double baseDefense,double baseDexterity,double baseIntelligence,double baseMana,double baseLuck){
         this.baseAttack = baseAttack;
@@ -30,45 +29,62 @@ public class PCharacter {
         this.baseIntelligence = baseIntelligence;
         currentHealth = baseHealth;
     }
-    //slot 0 is attack, slot 1 is defense, slot 2 is dexterity, slot 3 is luck, slot 4 is health in stats
+    //slot 0 is attack, slot 1 is defense, slot 2 is dexterity, slot 3 is luck, slot 4 is health in stats, slot 5 is intelligence, slot 6 is mana
     public ArrayList<Double> getEffectiveStats(){
-        ArrayList<Double> temp = new ArrayList<>();
-        temp.add(0.0);
-        temp.add(0.0);
-        temp.add(0.0);
-        temp.add(0.0);
-        temp.add(0.0);
-        effectiveDex = baseDexterity;
+        ArrayList<Double> stats = new ArrayList<>();
+        stats.add(baseAttack);
+        stats.add(baseDefense);
+        stats.add(baseDexterity);
+        stats.add(baseLuck);
+        stats.add(baseHealth);
+        stats.add(baseIntelligence);
+        stats.add(baseMana);
         for(Item item : inventory){
             if(item instanceof Weapon){
-                temp.set(0, baseAttack + ((Weapon) item).getAttack());
-                effectiveDex *= ((Weapon) item).getDexScalar();
-                temp.set(2, baseDexterity * ((Weapon) item).getDexScalar());
+                stats.set(0, stats.get(0) + ((Weapon) item).getAttack());
+                stats.set(2, stats.get(1) * ((Weapon) item).getDexScalar());
             } else if(item instanceof Armor){
-                temp.set(1, baseDefense + ((Armor) item).getDefense());
-                effectiveDex *= ((Armor) item).dexterityScalar;
+                stats.set(1, stats.get(1) + ((Armor) item).getDefense());
+                stats.set(2, stats.get(2) * ((Armor) item).getDexterityScalar());
             } else if(item instanceof Artifact){
-                //temp.set(2, baseDexterity * )
+                stats.set(0, stats.get(0) + ((Artifact) item).getAttack());
+                stats.set(0, stats.get(0) * ((Artifact) item).getAttackScalar());
+                stats.set(1, stats.get(1) + ((Artifact) item).getDefense());
+                stats.set(1, stats.get(1) * ((Artifact) item).getDefenseScalar());
+                stats.set(2, stats.get(2) + ((Artifact) item).getDexterity());
+                stats.set(2, stats.get(2) * ((Artifact) item).getDexterityScalar());
+                stats.set(3, stats.get(3) + ((Artifact) item).getLuck());
+                stats.set(3, stats.get(3) * ((Artifact) item).getLuckScalar());
+                stats.set(4, stats.get(4) + ((Artifact) item).getHealth());
+                stats.set(4, stats.get(4) * ((Artifact) item).getHealthScalar());
+                stats.set(5, stats.get(5) + ((Artifact) item).getIntelligence());
+                stats.set(6, stats.get(6) + ((Artifact) item).getMana());
+                stats.set(6, stats.get(6) * ((Artifact) item).getManaScalar());
             }
-            temp.set(2, effectiveDex);
 
         }
-        return temp;
+        return stats;
     }
     public double getEffectiveAttack(){
-        return baseAttack + getEffectiveStats().get(0);
+        return getEffectiveStats().get(0);
     }
     public double getEffectiveDefense(){
-        return baseDefense + getEffectiveStats().get(1);
+        return getEffectiveStats().get(1);
     }
     public double getEffectiveDex(){
-        return baseDexterity + getEffectiveStats().get(2);
+        return getEffectiveStats().get(2);
     }
     public double getEffectiveLuck(){
-        return baseLuck; //+ getEffectiveStats().get(3);
+        return getEffectiveStats().get(3);
+    }
+    public double getEffectiveInt(){
+        return getEffectiveStats().get(5);
+    }
+    public double getEffectiveMana(){
+        return getEffectiveStats().get(6);
     }
     public double getEffectiveHealth(){
-        return currentHealth; //+ getEffectiveStats().get(4);
+        return getEffectiveStats().get(4);
     }
     public void subtractHealth(double number){
         currentHealth -= number;
@@ -90,9 +106,9 @@ public class PCharacter {
         System.out.println("Attack: " + getEffectiveAttack());
         System.out.println("Defense: " + getEffectiveDefense());
         System.out.println("Dexterity: " + getEffectiveDex());
-        System.out.println("Intelligence: " + baseIntelligence);
-        System.out.println("Mana: " + baseMana);
-        System.out.println("Luck: " + baseLuck);
+        System.out.println("Intelligence: " + getEffectiveInt());
+        System.out.println("Mana: " + getEffectiveMana());
+        System.out.println("Luck: " + getEffectiveLuck());
     }
 
     //weapon is slot 0 armor is slot 1
@@ -103,6 +119,10 @@ public class PCharacter {
         temp.printWeaponStats();
         Armor temp2 = (Armor) inventory.get(1);
         temp2.printArmorStats();
+        if(inventory.get(2) != null){
+            Artifact temp3 = (Artifact) inventory.get(2);
+            temp3.printArtifactStats();
+        }
     }
 
     public Weapon getWeapon(){
