@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Unit-8-Project:jar">
+  <artifact type="jar" build-on-make="true" name="Unit-8-Project:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Unit_8_Project_jar</output-path>
     <root id="archive" name="Unit-8-Project.jar">
       <element id="module-output" name="Unit-8-Project" />
