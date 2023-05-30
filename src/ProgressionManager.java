@@ -107,26 +107,7 @@ public class ProgressionManager {
             UserInteraction.actionBar(inCombat,isTrading,isLooting, enemy,Main.character);
         }
     }
-//    public static void turnManager(NPC enemy, boolean story){
-//        if(Main.character.isDead()){
-//            if(story){
-//                inStory = false;
-//            }
-//            death();
-//        } else if(UserInteraction.enemyDefeated){
-//            UserInteraction.runCounter = 0;
-//            inCombat = false;
-//            isLooting = true;
-//            if(story){
-//                UserInteraction.storyActionBar();
-//            } else {
-//                UserInteraction.actionBar(isLooting, story);
-//            }
-//        } else {
-//            //inCombat = true;
-//            UserInteraction.actionBar(inCombat,isTrading,isLooting,true,enemy,Main.character);
-//        }
-//    }
+
     public static void turnManager(){
         if(Main.character.isDead()){
             death();

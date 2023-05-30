@@ -27,7 +27,7 @@ public class PCharacter {
         this.baseDexterity = baseDexterity;
         this.baseMana = baseMana;
         this.baseIntelligence = baseIntelligence;
-        currentHealth = baseHealth;
+        currentHealth = getEffectiveHealth();
     }
     //slot 0 is attack, slot 1 is defense, slot 2 is dexterity, slot 3 is luck, slot 4 is health in stats, slot 5 is intelligence, slot 6 is mana
     public ArrayList<Double> getEffectiveStats(){
@@ -89,6 +89,12 @@ public class PCharacter {
     public void subtractHealth(double number){
         currentHealth -= number;
     }
+    public void subtractHealthStory(double number){
+        currentHealth -= number;
+        if(currentHealth < 0){
+            ProgressionManager.death();
+        }
+    }
 
     public void printBaseStats(){
         //ArrayList<Double> temp = getEffectiveStats();
@@ -130,16 +136,16 @@ public class PCharacter {
     }
     public void rest(){
         //heals you back to full hp
-        System.out.println("You have healed " + (baseHealth - currentHealth) + " health");
-        currentHealth = baseHealth;
+        System.out.println("You have healed " + (getEffectiveHealth() - currentHealth) + " health");
+        currentHealth = getEffectiveHealth();
     }
     public void combatRest(){
         //heals you 30% uses 1 turns
         double temp = currentHealth;
         currentHealth += baseHealth * 0.3;
-        if(currentHealth > baseHealth){
-            currentHealth = baseHealth;
-            System.out.println("You have healed " + (baseHealth - temp) + " health");
+        if(currentHealth > getEffectiveHealth()){
+            currentHealth = getEffectiveHealth();
+            System.out.println("You have healed " + (getEffectiveHealth() - temp) + " health");
         } else {
             System.out.println("You have healed " +  (baseHealth * 0.3) + " health");
         }

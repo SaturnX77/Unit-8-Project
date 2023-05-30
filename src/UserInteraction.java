@@ -224,7 +224,7 @@ public class UserInteraction {
             double damage = npc.attack / (Main.character.getEffectiveDefense()/100);
             Main.character.subtractHealth(damage);
             System.out.println("You have taken " + damage + " damage");
-            System.out.println("You have " + Main.character.getEffectiveHealth() + " health");
+            System.out.println("You have " + Main.character.currentHealth + " health");
         } else {
             System.out.println("You have dodged the attack");
         }

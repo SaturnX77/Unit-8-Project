@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Unit_8_Project_jar</output-path>
     <root id="archive" name="Unit-8-Project.jar">
       <element id="module-output" name="Unit-8-Project" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
     </root>
   </artifact>
 </component>
