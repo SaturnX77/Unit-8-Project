@@ -72,7 +72,7 @@ public class ProgressionManager {
         System.out.println("You have acquired a new set of armor");
         Main.character.inventory.set(1, new Armor(Main.character));
     }
-    public void giveArtifact(){
+    public static void giveArtifact(){
         System.out.println("You have acquired a new artifact");
         Main.character.inventory.set(2, new Artifact());
     }
@@ -113,11 +113,16 @@ public class ProgressionManager {
             death();
         } else {
             isLooting = false;
+
             UserInteraction.actionBar();
 
         }
     }
     public static void death(){
+        StoryManager.hasArtifact = false;
+        StoryManager.viewedPicture = false;
+        StoryManager.viewedBook = false;
+
         System.out.println("\nThe world fades to black around you");
         sleep(2000);
         System.out.println("Suddenly a stale air fills your lungs and your eyes open again");

@@ -93,7 +93,7 @@ public class Artifact extends Item{
         System.out.println("Defense Scalar: " + defenseScalar);
         System.out.println("Dexterity: " + dexterity);
         System.out.println("Dexterity Scalar: " + dexterityScalar);
-        System.out.println("Luck:" + luck);
+        System.out.println("Luck: " + luck);
         System.out.println("Luck Scalar: " + luckScalar);
         System.out.println("Intelligence: " + intelligence);
         System.out.println("Mana: " + mana);

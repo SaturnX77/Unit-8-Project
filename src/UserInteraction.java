@@ -168,6 +168,7 @@ public class UserInteraction {
             ProgressionManager.turnManager(enemy);
         } else {
             if(enemy.dexterity > character.getEffectiveDex()){
+               // System.out.println("effective dex: " + character.getEffectiveDex());
                 ProgressionManager.sleep(200);
                 System.out.println("\nEnemy attacks first");
                 attackCharacter(enemy);

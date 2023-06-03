@@ -128,7 +128,7 @@ public class WorldGenerator {
         globalMovesInTile = NumberProcessor.getRandom(4,8);
         globalMovesLeft = globalMovesInTile;
         WorldType temp = null;
-        double randomNum = NumberProcessor.getRandom(0,19);
+        double randomNum = NumberProcessor.getRandom(0,101);
         //set this back to 101 on the high limit^
         randomNum = randomNum*(1+ (ProgressionManager.gameProgressionTurns/30.0));
         // System.out.println("world gen:" + randomNum)

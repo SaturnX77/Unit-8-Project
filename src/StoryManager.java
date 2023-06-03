@@ -5,7 +5,8 @@ public class StoryManager {
     //-------------------------------------Mansion Story Top-----------------------------------
     static int case1Visited = 0;
     static int case1Position = 0;
-    static String artifactPosition = "Bedroom";
+   // static String artifactPosition = "Bedroom";
+    static boolean viewedPicture = false;
     static boolean hasArtifact = false;
     static boolean viewedBook = false;
     //------------------------------------Mansion Story Bottom---------------------------------
@@ -22,13 +23,13 @@ public class StoryManager {
 
     static ArrayList<Integer> usedStories = new ArrayList<>();
     public static void newStory(){
-        if(usedStories.size() == 1){
+        if(usedStories.size() == 2){
             System.out.println("No more stories available");
             ProgressionManager.moveForward();
         }
       //  System.out.println("newstory called");
         //System.out.println(usedStories);
-        int rand = NumberProcessor.getRandom(0,1);
+        int rand = NumberProcessor.getRandom(0,2);
         //System.out.println("new story rand: " + rand);
         boolean usedStory = false;
         for (Integer storyIndex : usedStories) {
@@ -147,7 +148,7 @@ public class StoryManager {
                 } else if (case0Position == 1) {
                     System.out.println("Apparently you had denied this quest before");
                     ProgressionManager.sleep(1000);
-                    System.out.println("Is it work accepting this time?");
+                    System.out.println("Is it worth accepting this time?");
                     ProgressionManager.sleep(1000);
                     villageArtifactMountain();
                 }
@@ -354,9 +355,9 @@ public class StoryManager {
                     System.out.println("-5 Health");
                     Main.character.subtractHealthStory(5);
                     ProgressionManager.sleep(1000);
-                    System.out.println("Suddenly a robotic voice pops into your head and says 'Detecting multiple Leviathan class life forms... Are you certain whatever you're doing is worth it?'");
-                    ProgressionManager.sleep(1000);
-                    System.out.println("You have no idea what it means or what its talking about but you decide to consider the warning");
+                    //System.out.println("Suddenly a robotic voice pops into your head and says 'Detecting multiple Leviathan class life forms... Are you certain whatever you're doing is worth it?'");
+//                    ProgressionManager.sleep(1000);
+//                    System.out.println("You have no idea what it means or what its talking about but you decide to consider the warning");
                     ProgressionManager.sleep(1000);
                     System.out.println("Continue forwards   Yes[0]   No[1]");
                     switch (UserInteraction.getUserText("yes,0,no,1")){
@@ -391,7 +392,7 @@ public class StoryManager {
         ProgressionManager.sleep(1000);
         System.out.println("You feel fresh air slam into your nostrils and you breathe a sigh of relief. The dark substance doesn't appear to have made its way into the house");
         ProgressionManager.sleep(1000);
-        System.out.println("Take a second to calm down and then look down at you body. The black substance seems to be gone and the damaged skin seems to have healed");
+        System.out.println("You Take a second to calm down and then look down at you body. The black substance seems to be gone and the damaged skin seems to have healed");
         Main.character.rest();
         ProgressionManager.sleep(1000);
         System.out.println("You finally take a look around the mansion");
@@ -411,6 +412,7 @@ public class StoryManager {
         }
     }
     private static void lookAtMansionPicture(){
+        viewedPicture = true;
         System.out.println("You come closer to the diamond encrusted frame. The picture inside depicts a professional looking woman");
         ProgressionManager.sleep(1000);
         System.out.println("She is wearing a long dress and around her neck hangs a pendant with a shining gem in the center. It doesn't seem like any gem you know of");
@@ -435,7 +437,7 @@ public class StoryManager {
             case "1":
                 labRoom();
                 break;
-            case "3":
+            case "2":
                 bedroom();
                 break;
         }
@@ -454,7 +456,7 @@ public class StoryManager {
                 ProgressionManager.sleep(1000);
                 System.out.println("You look through the scope and you can hardly believe your eyes");
                 ProgressionManager.sleep(1000);
-                System.out.println(" A universe unfurls before you, revealing a tapestry of twinkling stars and swirling galaxies. A detail the likes you could never have even imagined.");
+                System.out.println("A universe unfurls before you, revealing a tapestry of twinkling stars and swirling galaxies. A detail the likes you could never have even imagined.");
                 ProgressionManager.sleep(1000);
                 System.out.println("You spend the next few minutes in a state of wonder, marveling at the beauty of the universe");
                 ProgressionManager.sleep(1000);
@@ -474,7 +476,7 @@ public class StoryManager {
 
     private static void labRoom(){
         ProgressionManager.sleep(1000);
-        System.out.println("You enter the room with a god plaque saying 'Lab'");
+        System.out.println("You enter the room with a gold plaque saying 'Lab'");
         ProgressionManager.sleep(1000);
         System.out.println("As you push the door open, there is a clinking of glass as you nudge away glass beakers and jars");
         ProgressionManager.sleep(1000);
@@ -497,6 +499,10 @@ public class StoryManager {
                 System.out.println("As you keep flipping through the pages, one catches your attention");
                 ProgressionManager.sleep(1000);
                 System.out.println("A beautiful amulet with a shining green stone at the center");
+                if(viewedPicture){
+                    ProgressionManager.sleep(1000);
+                    System.out.println("Could this be the same amulet that the woman was wearing in the picture was wearing earlier?");
+                }
                 if(hasArtifact){
                     ProgressionManager.sleep(1000);
                     System.out.println("You look down at your own amulet. It appears to be the same as the one in the illustration. You wonder quietly to yourself what it could mean");
@@ -540,12 +546,23 @@ public class StoryManager {
         System.out.println("Put on the necklace [0]");
         UserInteraction.getUserText("0");
         System.out.println("You put on the necklace...");
+        hasArtifact = true;
         for(int i = 0; i < 3; i++){
             ProgressionManager.sleep(2000);
             System.out.println(".");
         }
         ProgressionManager.sleep(2000);
-        System.out.println("");
+        System.out.println("Suddenly the entire world turns black and you find yourself unconscious");
+        ProgressionManager.sleep(1000);
+        System.out.println("Hours if not days pass before you wake up again");
+        ProgressionManager.sleep(1000);
+        System.out.println("Your eyes flicker open to the sounds of wind blowing and bird chirping around you");
+        ProgressionManager.sleep(1000);
+        System.out.println("The mansion and the dying field are nowhere to be seen. Instead you find yourself in a beautiful plain with lots of greenery and animal life");
+        ProgressionManager.sleep(1000);
+        System.out.println("You glance down and find the amulet still around your neck. You try to pull at it but it looks like it has attached itself to you quite securely");
+        ProgressionManager.giveArtifact();
+        exitStory();
     }
     //------------------------------------------Lab Story Bottom--------------------------------------------
 
@@ -567,6 +584,7 @@ public class StoryManager {
                 //ProgressionManager.turnManager(enemy);
             } else {
                 if(enemy.dexterity > character.getEffectiveDex()){
+                    System.out.println("effective dexterity: " + character.getEffectiveDex());
                     ProgressionManager.sleep(200);
                     System.out.println("\nEnemy attacks first");
                     UserInteraction.attackCharacter(enemy);

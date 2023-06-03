@@ -42,7 +42,7 @@ public class PCharacter {
         for(Item item : inventory){
             if(item instanceof Weapon){
                 stats.set(0, stats.get(0) + ((Weapon) item).getAttack());
-                stats.set(2, stats.get(1) * ((Weapon) item).getDexScalar());
+                stats.set(2, stats.get(2) * ((Weapon) item).getDexScalar());
             } else if(item instanceof Armor){
                 stats.set(1, stats.get(1) + ((Armor) item).getDefense());
                 stats.set(2, stats.get(2) * ((Armor) item).getDexterityScalar());
@@ -108,7 +108,8 @@ public class PCharacter {
     }
     public void printEffectiveStats(){
         System.out.println("\nEffective stats:");
-        System.out.println("Health: " + getEffectiveHealth());
+        System.out.println("Current health: " + currentHealth);
+        System.out.println("Max Health: " + getEffectiveHealth());
         System.out.println("Attack: " + getEffectiveAttack());
         System.out.println("Defense: " + getEffectiveDefense());
         System.out.println("Dexterity: " + getEffectiveDex());
